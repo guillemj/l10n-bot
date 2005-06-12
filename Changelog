@@ -1,2 +1,9 @@
-2003-01-14	Tim Dijkstra <tim@famdijkstra.org>
+2004-01-24	Tim Dijkstra <tim@famdijkstra.org>
+	* Release 0.1.1
+	* Added [DONE] status to l10n-bot, sql definition, php-script
+	* Added nodone option to php-script. If called with that nodone=1 it 
+	  doesn't show the [DONE] translations
+	* php-script will not show [DONE] translations older than 2 weeks
+
+2004-01-14	Tim Dijkstra <tim@famdijkstra.org>
 	* First release, version 0.1

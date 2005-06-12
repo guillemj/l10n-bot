@@ -84,6 +84,9 @@ while(($var=mysql_fetch_assoc($res)) or $old[0]){
     // If the former record doesn't have the same name, that was the last 
     // record for this 'name'.
     if(isset($old) && ($var['name']!=$old[0]['name'])){
+	// Skip done if > 2 weeks ago 1209600
+	if(!( ($old[count($old)-1]['status']=="DONE") and (isset($nodone) or $old[count($old)-1]['date']<date("Y-m-d H:i:s", time()-1209600)) ) ){
+//echo $old[count($old)-1]['date'] .$old[count($old)-1]['status'].date("Y-m-d H:i:s", time()+1)."<br>";
 	$cur_name=$old[0]['name'];
         // If the user wants to see the history of the translation
         // We'll put all records of the same name in an array and append it to
@@ -108,6 +111,7 @@ while(($var=mysql_fetch_assoc($res)) or $old[0]){
 	// Else we'll only keep the last
 	    $old[count($old)-1]['button']="<a href='$PHP_SELF?history=$history,{$old[0]['name']}#{$old[0]['name']}'>+</a>";
 	    $data[]=array_pop($old);
+	}
 	}
 
         unset($old);

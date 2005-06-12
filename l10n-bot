@@ -44,7 +44,7 @@ $head = $entity->head;
 
 
 
-if( !( $head->get('Subject') =~ /^\[(ITT|RFR|RFR2|LCFC|BTS#\d+|CLOSE)\]\s*(po-debconf|debian-installer|po|man|wml):\/\/([^\s]*)\s/ ) ){
+if( !( $head->get('Subject') =~ /^\[(ITT|RFR|RFR2|LCFC|BTS#\d+|DONE)\]\s*(po-debconf|debian-installer|po|man|wml):\/\/([^\s]*)\s/ ) ){
     $parser->filer->purge(); exit;
 }
 
