@@ -1,0 +1,73 @@
+#!/usr/bin/perl
+#
+# l10n-closebugs -- Query debian BTS if bugs marked as open are closed.
+# Copyright (C) 2003-2004 Tim Dijkstra
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 2 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+#
+# FUNCTION:
+#  This program will query the debian BTS for records which are marked is open
+#  in our db to check if they are closed. It will also correct the date of 
+#  an open bug to match it what the BTS says.
+#
+use LWP::UserAgent;
+use DBI;
+use Date::Parse;
+use Date::Format;
+
+my $ua = LWP::UserAgent->new;
+$ua->agent('l10n-query/0.1');
+
+$dsn="DBI:mysql:database=debian;host=baardmijt;port=3306";
+$link = DBI->connect($dsn, "USER","PASSWORD");
+
+# Get all records with status BTS, In MySQL > 4.1 we could use a subquery
+# to not also get all closed bugs (I think...)
+$query = $link->prepare("SELECT id,bugnr,name,translator,type,date FROM translation WHERE status='BTS'");
+$query->execute();
+
+while (my $row = $query->fetchrow_hashref()){
+    # See if there exists a record which shows this bug is closed
+    # If so next BTS.
+    $query2 = $link->prepare("SELECT bugnr,name FROM translation WHERE status='DONE' AND bugnr='$row->{'bugnr'}'");
+    $query2->execute();
+    $query2->rows and next;
+    
+    # Get BR from BTS 
+    my $response = $ua->get("http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=$row->{'bugnr'}");
+    if ($response->is_success) {
+        # Only stuff before "View this report as an" is interessting
+	${$response->content_ref} =~ /View this report as an/;
+	$head=$`;
+
+	# Get the date the bug was filed
+	$head =~ /Date:([^;]*)/; 
+	$date = Date::Format::time2str("%Y-%m-%d %H\:%M\:%S",Date::Parse::str2time($1));
+	# If it doesn't match with what we have in db, change it.
+	if($date != $row->{'date'}){
+	  $link->do("UPDATE translation SET date='$date' WHERE id='$row->{'id'}'");
+	}
+
+	# If bug is done, create a new record in db to show this
+        if($head =~ /<strong>Done:<\/strong>/){
+	    $link->do("INSERT INTO translation VALUES(null,NOW(),'$row->{'name'}','DONE','$row->{'type'}','$row->{'translator'}',null,'$row->{'bugnr'}')");
+	}
+    }
+    
+}
+
+$query->finish();
+$query2->finish();
+$link->disconnect();

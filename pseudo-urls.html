@@ -1,0 +1,78 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+<head>
+  <title>Coordination of debian-l10n-dutch</title>
+</head>
+<body text="#000000" bgcolor="#FFFFFF" link="#0000FF" vlink="#800080" alink="#FF0000">
+<table border="0" cellpadding="3" cellspacing="0" align="center" summary="">
+
+<tr>
+<td>
+<a href="http://www.debian.org/"><img src="http://www.debian.org/logos/openlogo-nd-50.png" border="0" hspace="0" vspace="0" alt="" width="50" height="61"></a>
+<a href="http://www.debian.org/"><img src="http://www.debian.org/Pics/debian.jpg" border="0" hspace="0" vspace="0" alt="Debian Project" width="179" height="61"></a>
+</td>
+</tr>
+</table>
+<h1>Pseudo-urls</h1>
+The program that listens to debian-l10n-dutch understands pseudo-urls in the subject header. The pseudo-urls have to have the following form
+<!--<center><code>[&lt;state&gt;]&nbsp;&lt;type&gt;://&lt;name&gt;</code></center>-->
+<center><code>[(ITT|RFR|RFR2|LCFC|BTS#&lt;bugnr&gt;)]&nbsp;(po-debconf|po|debian-installer|man|wml)://&lt;name&gt;</code></center>
+<p>
+The <i>state</i> (between square brackets) can be one of the following: ITT,RFR,RFR2,LCFC or BTS. 
+
+<ul>
+ <li>ITT (Intent To Translate)<br>
+   <ul>
+    <li>Sent to indicate that you plan to work on the translation, used to avoid double work
+   </ul>
+ <li>RFR (Request For Review)
+   <ul>
+     <li>Initial translation is done and, attached to the mail, others on the list can then go over it to check for errors
+     <li>Possibly followed by a RFR2 when substantial changes have been made
+     <li>NOTE: send a reply if you checked it and found no flaws
+   </ul>
+ <li>ITR (Intent To Review)
+   <ul>
+    <li>Meaning "Intent To Review"
+    <li>Used to avoid LCFC's being sent when there are pending reviews out.
+    <li>Mainly used when you expect your review not to be ready for several days (because the translation is big, or you don't have any time before the weekend, ...)
+   <li>mail body should contain an indication of when to expect the review
+   </ul>
+ <li>LCFC (Last Chance For Comment)
+   <ul>
+    <li>Indicates that translation is done, change from the review process have been incorporated, and translation will be send to the appropriate place
+    <li>Can be sent when there are no ITR's, discussion following the RFR has ended and it has been 3 days since the RFR
+    <li>should not be sent before there has been at least one review
+   </ul>
+ <li>BTS (Bug Tracking System)
+   <ul>
+    <li>Used to register a bugnr once you submitted the translation to the BTS. 
+    <li>Every day the l10n-bot will check if an open bug report has been closed.
+   </ul>
+</ul>
+
+<p>
+The <i>type</i> can be po-debconf,debian-installer,po,man or wml. The structure of <i>name</i> depends on the chosen type. In principle it's just an identifier, but it's strongly recommended to follow the following rules.
+<ul>
+ <li><code>po-debconf://package-name</code></li>
+ <li><code>po://package-name/path-in-sourcepackage</code></li>
+ <li><code>debian-installer://package-name/path-in-sourcepackage</code></li>
+ <li><code>wml://adres_of_webpage</code></li>
+ <li><b>Doesn't work yet </b><code>man://package-name/section/subject</code></li>
+</ul>
+If you send an LCFC, RFR of RFR2 you should attach the file you want reviewed. The file should have the appropriate extension, for the types po, po-debconf and debian-installer this <i>po</i>, for the type wml <i>wml</i> and for type man I still have to figure it out. The file will be put up the website.
+<p>
+The state BTS is somewhat special, it used to register a bugnr so the l10n-bot can track the status of you're translation once you submitted it to the BTS. Every day it will check if any of the open bug reports have been closed. An example of this command is:
+<center><code>[BTS#1234] po-debconf://cupsys</code></center>
+<p>
+If you have the intent to translate a lot of packages, you can ITT them all at ones. An example:
+<center><code>[ITT] po-debconf://{cupsys,courier,apache}</code></center>
+So put the packages between curly braces and separate them with comma's. No extra spaces!
+
+
+
+<p>
+<hr noshade width="100%" size="1">
+<p>
+<small>Comments: <a href='mailto:webmaster@famdijkstra.org'>webmaster</a></small>
+</body>
