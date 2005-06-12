@@ -1,9 +1,26 @@
-2004-01-24	Tim Dijkstra <tim@famdijkstra.org>
+2004-06-05  Guillem Jover <guillem@debian.org>
+
+	* Release 0.1.2.
+	* l10n-bot (get_entity_filenames): New function.
+	Use get_entity_filenames to support multipart attachments.
+	Change dsn to point to the localhost.
+	Make independent from language.
+	* pseudo-urls.html: Reindent. Change webmaster email. Make HTML 4.01
+	compliant.
+	* index.php: Likewise. Move db data to variables.
+	* MySQL_definition.txt: Renamed to ...
+	* l10n_create.sql: ... this. Added table and permission creation.
+	* l10n_drop.sql: New file.
+
+2004-01-24  Tim Dijkstra  <tim@famdijkstra.org>
+
 	* Release 0.1.1
 	* Added [DONE] status to l10n-bot, sql definition, php-script
-	* Added nodone option to php-script. If called with that nodone=1 it 
-	  doesn't show the [DONE] translations
+	* Added nodone option to php-script. If called with that nodone=1 it
+	doesn't show the [DONE] translations
 	* php-script will not show [DONE] translations older than 2 weeks
 
-2004-01-14	Tim Dijkstra <tim@famdijkstra.org>
+2004-01-14  Tim Dijkstra  <tim@famdijkstra.org>
+
 	* First release, version 0.1
+

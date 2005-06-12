@@ -1,6 +1,6 @@
 #!/usr/bin/perl -w
 #
-# l10n-bot -- Parse emails on stdin for psuedo-urls used on debian-l10n-dutch@
+# l10n-bot -- Parse emails on stdin for psuedo-urls used on debian-l10n-*@
 # Copyright (C) 2003-2004 Tim Dijkstra
 #
 # This program is free software; you can redistribute it and/or modify
@@ -19,7 +19,7 @@
 #
 # FUNCTION:
 #  This program will parse emails on stdin for psuedo-urls in the subject used
-#  on debian-l10n-dutch@l.d.o for coordination, If the subject starts with 
+#  on debian-l10n-*@l.d.o for coordination, If the subject starts with 
 #  [(ITT|RFR|RFR2|LCFC|BTS|CLOSE)] it is further processed. This means that 
 #  info found in this url is put in an MySQL database. In case where it starts 
 #  with [(RFR|LCFC)] the last file that has an appropriate filename extension 
@@ -28,6 +28,27 @@
 
 use MIME::Parser;
 use DBI;
+
+# Search recursively all entity filenames
+sub get_entity_filenames {
+    my ($entity) = @_;
+    my @files;
+    my @parts = $entity->parts;
+
+    if (@parts) {                     # multipart...
+	foreach $part (@parts) {
+	    push @files, get_entity_filenames($part);
+	}
+    } else {                          # single part...
+        if ($entity->bodyhandle) {
+	    return ($entity->bodyhandle->path);
+	} else {
+	    return ();
+	}
+    }
+
+    return @files;
+}
 
 #@stati=(ITT,RFR,RFR2,LCFC,SUBMIT,CLOSE);
 # Define which filename is appropriate for wich type of translation
@@ -73,17 +94,18 @@ if( $type =~ /^po-debconf$/ ){
 }
     
 # Get filename
-if( ($status =~ /(RFR|RFR2|LCFC)/) and ($entity->parts() > 0) ){
-   @files=$entity->parts();
-   for $i ( 0 .. $#files ) {
-       if($files[$i]->bodyhandle and ($files[$i]->bodyhandle->path =~ /\.$exts{$type}$/ ) ){
-	  $tmpfile=$files[$i]->bodyhandle->path;
+if ( ($status =~ /(RFR|RFR2|LCFC)/) and ($entity->parts() > 0) ) {
+   my @filenames = get_entity_filenames($entity);
+
+   for $path (@filenames) {
+       if ($path =~ /\.$exts{$type}$/) {
+	  $tmpfile=$path;
 	  $file=$exts{$type};
        }
    }
 }
 
-$dsn="DBI:mysql:database=debian;host=baardmijt;port=3306";
+$dsn="DBI:mysql:database=debian;host=localhost;port=3306";
 $link = DBI->connect($dsn, "USER","PASSWORD");
 
 # If we have an ITT, we can have multiple packagename {php4,apache,mysql}
@@ -102,3 +124,4 @@ for $tmpname (split(',',$name)){
 $link->disconnect();
 
 $parser->filer->purge();
+
