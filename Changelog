@@ -1,3 +1,17 @@
+2004-02-25  Guillem Jover <guillem@debian.org>
+
+	* Release 0.3.
+	* pseudo-urls.html: Rename to ...
+	* pseudo-urls.en.html: ... this.
+	* pseudo-urls.ca.html: New file.
+	* index.php: Rename to ...
+	* index.en.php: ... this.
+	* index.ca.php: New file.
+	* l10n-bot-needed: Rename to ...
+	* README: ... this. Add a small description of the content.
+	* l10n-closebugs: Move db data to variables.
+	* l10n-bot: Reindent. Join multi line 'Subject' headers into one line.
+
 2004-01-30  Guillem Jover <guillem@debian.org>
 
 	* Release 0.2.

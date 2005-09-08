@@ -1,3 +1,5 @@
+The bot needs the following packages:
+
 libwww-perl
 libmime-perl
 libtext-iconv-perl

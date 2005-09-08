@@ -27,11 +27,15 @@ use DBI;
 use Date::Parse;
 use Date::Format;
 
+my $db_name = "debian_l10n_ca";
+my $db_user = "USER";
+my $db_passwd = "PASSWD";
+
 my $ua = LWP::UserAgent->new;
 $ua->agent('l10n-query/0.1');
 
-$dsn="DBI:mysql:database=debian_l10n_ca;host=localhost;port=3306";
-$link = DBI->connect($dsn, "USER","PASSWORD");
+$dsn="DBI:mysql:database=$db_name;host=localhost;port=3306";
+$link = DBI->connect($dsn, $db_user, $db_passwd);
 
 # Get all records with status BTS, In MySQL > 4.1 we could use a subquery
 # to not also get all closed bugs (I think...)

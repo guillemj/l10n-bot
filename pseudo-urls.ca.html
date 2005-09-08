@@ -1,0 +1,172 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+     "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <title>Coordinació de debian-l10n-catalan</title>
+</head>
+<body text="#000000" bgcolor="#FFFFFF" link="#0000FF" vlink="#800080" alink="#FF0000">
+  <table border="0" cellpadding="3" cellspacing="0" align="center" summary="">
+    <tr>
+      <td>
+        <a href="http://www.debian.org/">
+          <img src="http://www.debian.org/logos/openlogo-nd-50.png" border="0" hspace="0" vspace="0" alt="" width="50" height="61" />
+        </a>
+        <a href="http://www.debian.org/">
+          <img src="http://www.debian.org/Pics/debian.jpg" border="0" hspace="0" vspace="0" alt="Debian Project" width="179" height="61" />
+        </a>
+      </td>
+    </tr>
+  </table>
+
+  <h1>Pseudo-urls</h1>
+
+  <p>
+    El programa que rep els missatges de la llista debian-l10n-catalan es
+    capaç d'interpretar les "pseudo-url" que apareixen a l'assumpte. El
+    format de les "pseudo-url" és el següent:
+  </p>
+  
+<!--<center><code>[&lt;state&gt;]&nbsp;&lt;type&gt;://&lt;name&gt;</code></center>-->
+  <center>
+    <code>[(ITT|RFR|RFR2|LCFC|BTS#&lt;nrerror&gt;)]&nbsp;(po-debconf|po|debian-installer|man|wml)://&lt;nom&gt;</code>
+  </center>
+
+  <p>
+    L'<i>indicador d'estat</i> (entre gafets) pot ser:
+    ITT, RFR, RFR2, LCFC o BTS.
+  </p>
+
+  <ul>
+    <li>ITT (Petició de traducció)<br />
+      <ul>
+        <li>
+	  L'envieu per indicar que planegeu treballar en la traducció.
+	  S'utilitza per evitar duplicar els esforços.
+        </li>
+      </ul>
+    </li>
+    <li>RFR (Sol·licitud de revisió)
+      <ul>
+	<li>
+	  L'envieu un cop s'ha realitzat la traducció inicial i n'adjunteu
+	  el resultat al correu, els altres usuaris de la llista poden
+	  accedir-hi i revisar-ne els errors.
+	</li>
+	<li>
+	  És possible que el segueixi un missatge d'estat RFR2 en cas
+	  d'haver canvis importants.
+	</li>
+	<li>
+	  NOTA: cal que envieu una resposta en cas d'haver-lo revisat i no
+	  haver trobat cap error.
+	</li>
+      </ul>
+    </li>
+    <li>ITR (Aplaçament per revisió)
+      <ul>
+	<li>
+	  Indica la sol·licitud d'aplaçament per a dur a terme una revisió.
+	</li>
+	<li>
+	  S'utilitza per evitar l'enviament de missatges d'estat LFCF quan hi
+	  ha revisions pendents.
+	</li>
+	<li>
+	  S'utilitza, bàsicament, quan espereu que la revisió no estarà
+	  llesta en un interval de temps llarg (arran de la grandària del la
+	  traducció, de no tenir temps abans del cap de setmana, etc.).
+	</li>
+	<li>
+	  En el cos del missatge hauríeu d'indicar quan espereu tenir acabada
+	  la revisió.
+	</li>
+      </ul>
+    </li>
+    <li>LCFC (Última oportunitat per a comentaris)
+      <ul>
+	<li>
+	  Indiqueu que heu finalitzat la traducció, que heu incorporat els
+	  canvis del procés de revisió i que enviareu la traducció al lloc
+	  apropiat.
+	</li>
+	<li>
+	  Ho podeu enviar quan no hi ha missatges d'estat ITR, quan han
+	  finalitzat les discussions corresponents a l'RFR i quan han
+	  passat tres dies des de l'RFR.
+	</li>
+	<li>
+	  No l'hauríeu d'enviar abans d'haver-se realitzat, com a mínim,
+	  una revisió.
+	</li>
+      </ul>
+    </li>
+    <li>BTS (Sistema de seguiment d'errors)
+      <ul>
+	<li>
+	  S'utilitza per registrar un número d'error una vegada heu tramès
+	  la traducció al BTS.
+	</li>
+	<li>
+	  El l10n-bot verifica diàriament si s'ha tancat algun informe
+	  d'error obert.
+	</li>
+      </ul>
+    </li>
+  </ul>
+
+  <p>
+    El <i>tipus</i> pot ser: po-debconf, debian-installer, po, man o wml.
+    L'estructura del <i>nom</i> està en funció del tipus escollit. En
+    principi només és un identificador, però és molt recomanable seguir
+    les regles següents:
+  </p>
+
+  <ul>
+   <li><code>po-debconf://nom-paquet</code></li>
+   <li><code>po://nom-paquet/cami-font-paquet</code></li>
+   <li><code>debian-installer://nom-paquet/cami-font-paquet</code></li>
+   <li><code>wml://adreça_web</code></li>
+   <li><b>Encara no funciona</b> <code>man://nom-paquet/seccio/assumpte</code></li>
+  </ul>
+
+  <p>
+    Si envieu un missatge amb l'indicador d'estat LFCF, RFR o RFR, hauríeu
+    d'adjuntar el fitxer que voleu que es revisi. El fitxer hauria de tenir
+    l'extensió adequada: pels tipus po, po-debconf i debian-installer és
+    <i>po</i>, pel tipus <i>wml</i> és wml i pel tipus man encara s'ha de
+    decidir. El fitxer es penjarà a la pàgina web.
+  </p>
+
+  <p>
+    L'estat BTS és un cas apart, ja que s'utilitza per registrar un número
+    d'error i, per tant, el l10n-bot pot seguir l'estat de la traducció un
+    cop estigui tramesa al BTS. Diàriament verificarà si alguns dels informes
+    d'error oberts s'han tancat. Un exemple d'aquesta ordre seria:
+  </p>
+
+  <center><code>[BTS#1234] po-debconf://cupsys</code></center>
+
+  <p>
+    Si teniu la intenció de traduir molts paquets, podeu enviar tots els
+    missatges d'estat ITT en un de sol. Un exemple podria ser:
+  </p>
+  
+  <center><code>[ITT] po-debconf://{cupsys,courier,apache}</code></center>
+
+  <p>
+    Heu de posar els paquets entre claus i separar-los per comes.
+    No afegiu cap espai extra!
+  </p>
+
+  <hr noshade width="100%" size="1" />
+
+  <p>
+    <small>
+      Per resoldre algun dubte envieu un correu electrònic a
+      <a href='mailto:webmaster@ca.debian.net'>webmaster</a>
+    </small>
+  </p>
+</body>
+</html>
+
