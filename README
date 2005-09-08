@@ -1,6 +1,6 @@
 The bot needs the following packages:
 
-libwww-perl
+libnet-ldap-perl
 libmime-perl
 libtext-iconv-perl
 php4-mysql

@@ -1,5 +1,6 @@
 <?
 // Copyright (C) 2003-2004 Tim Dijkstra
+// Copyright (C) 2004 Guillem Jover
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -26,10 +27,13 @@
 $webmaster = "webmaster@ca.debian.net";
 $language = "catalan";
 $language_name = "Catalan";
+$team = "ca";
 
 $db_name = "debian_l10n_ca";
 $db_user = "USER";
 $db_passwd = "PASSWD";
+$db_host = "localhost";
+$db_port = 3306;
 
 ?>
 
@@ -38,15 +42,15 @@ $db_passwd = "PASSWD";
 <html>
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-  <title>Coordinació de l'equip de traducció debian-l10-<?php echo $language; ?></title>
+  <title>Coordinació de l'equip de traducció debian-l10n-<?php echo $language; ?></title>
   <style type='text/css'>
-    .ITT {background-color:#ff6d6d;}
-    .RFR, .RFR2 {background-color:#f4cf16}
-    .LCFC {background-color:#edf416}
-    .BTS {background-color:#a8e5a5}
-    .DONE {background-color:#1df416}
-    A {text-decoration:none;}
-    .nobg{background-color:white;}
+    .ITT { background-color: #ff6d6d; }
+    .RFR, .RFR2 { background-color: #f4cf16; }
+    .LCFC { background-color: #edf416; }
+    .BTS { background-color: #a8e5a5; }
+    .DONE { background-color: #1df416; }
+    A { text-decoration: none; }
+    .nobg { background-color: white; }
   </style>
 </head>
 <body text="#000000" bgcolor="#FFFFFF" link="#0000FF" vlink="#800080" alink="#FF0000">
@@ -66,6 +70,11 @@ $db_passwd = "PASSWD";
   <h1>Coordinació de l'equip de traducció debian-l10-<?php echo $language; ?></h1>
 
   <p>
+    Vegeu el document <a href='intro'>d'introducció</a> a l'equip de
+    traducció.
+  </p>
+
+  <p>
     L'objectiu d'aquesta pàgina és la coordinació de la traducció al català
     dels textos relacionats amb debian. Tal i com s'expressa en
     <a href='pseudo-urls'>aquest</a> document, s'utilitzen "pseudo-url" a
@@ -78,8 +87,7 @@ $db_passwd = "PASSWD";
     Un programa analitza aquestes "pseudo-url" i n'emmagatzema les dades
     importants, les quals es mostren més avall. En el cas dels missatges
     de tipus RFR/LCFC, també cerca els fitxers adjunts amb l'extensió
-    correcte corresponent (po,wml). <i>De moment es desconeix el mètode per
-    a la traducció de pàgines "man"</i>.
+    correcte corresponent (po,wml).
   </p>
 
   <table>
@@ -94,101 +102,107 @@ $db_passwd = "PASSWD";
     </tr>
 <?
 
-$expanded = explode(",", $history);
-// Only sorting on a few things is allowed.
-if(!in_array($sort, array('status', 'date', 'name', 'translator'))) {
+  $expanded = explode(",", $history);
+  // Only sorting on a few things is allowed.
+  if (!in_array($sort, array('status', 'date', 'name', 'translator'))) {
     $sort = 'name';
-}
-// Make a compare function on-the-fly, used to sort the array
-if($sort != 'status') {
+  }
+  // Make a compare function on-the-fly, used to sort the array
+  if ($sort != 'status') {
     $cmpfunc = create_function('$a,$b', "return strcmp(\$a[$sort], \$b[$sort]);");
-} else {
+  } else {
     function comp_status ($a, $b)
     {
       $stati = array('ITT', 'RFR', 'RFR2', 'LCFC', 'BTS', 'DONE');
-      return array_search($a['status'], $stati) > array_search($b['status'], $stati);
+      return array_search($a['status'], $stati) >
+             array_search($b['status'], $stati);
     }
     $cmpfunc = "comp_status";
-}
+  }
 
+  $link = mysql_connect($db_host, $db_user, $db_passwd);
+  mysql_select_db($db_name);
 
-$link = mysql_connect("localhost", $db_user, $db_passwd);
-mysql_select_db($db_name);
+  // Get everything from the db
+  $res = mysql_query($sql = "SELECT id,name,status,type,translator,date,file,bugnr FROM translation ORDER BY type,name,date,status");
 
-// Get everything from the db
-$res = mysql_query($sql = "SELECT id,name,status,type,translator,date,file,bugnr FROM translation ORDER BY type,name,date,status ");
-
-// Loop over it
-while(($var = mysql_fetch_assoc($res)) or $old[0]) {
-    // If the former record doesn't have the same name, that was the last 
+  // Loop over it
+  while (($var = mysql_fetch_assoc($res)) or $old[0]) {
+    // If the former record doesn't have the same name, that was the last
     // record for this 'name'.
-    if(isset($old) && ($var['name'] != $old[0]['name'])) {
-	// Skip done if > 2 weeks ago 1209600
-	if(!( ($old[count($old)-1]['status'] == "DONE")
-	   and (isset($nodone) 
-	   or $old[count($old)-1]['date'] < date("Y-m-d H:i:s", time()-1209600)) ) ) {
-//echo $old[count($old)-1]['date'] .$old[count($old)-1]['status'].date("Y-m-d H:i:s", time()+1)."<br>";
-	    $cur_name = $old[0]['name'];
+    if (isset($old) && ($var['name'] != $old[0]['name']))
+    {
+      // Skip done if > 2 weeks ago 1209600
+      if (!(($old[count($old)-1]['status'] == "DONE") and (isset($nodone)
+	  or $old[count($old)-1]['date'] < date("Y-m-d H:i:s", time()-1209600))))
+      {
+	//echo $old[count($old)-1]['date'] .$old[count($old)-1]['status'].date("Y-m-d H:i:s", time()+1)."<br>";
+	$cur_name = $old[0]['name'];
 
-	    // If the user wants to see the history of the translation.
-	    // We'll put all records of the same name in an array and append
-	    // it to the last record. Only this record will end up in the data
-	    // array. This way we can still sort on 'name'
-	    if(in_array($old[0]['name'], $expanded)) {
-		for($i = 1; $i < count($old); $i++) {
-		    unset($old[$i]['name']);
-		    // Rows form history, are printed a bit different
-		    if($old[0]['translator'] == $old[$i]['translator'])
-			unset($old[$i]['translator']);
-		    $old[$i]['class'] = $old[count($old) - 1]['status'];
-		}
+	// If the user wants to see the history of the translation.
+	// We'll put all records of the same name in an array and append
+	// it to the last record. Only this record will end up in the data
+	// array. This way we can still sort on 'name'
+	if (in_array($old[0]['name'], $expanded))
+	{
+	  for ($i = 1; $i < count($old); $i++)
+	  {
+	    unset($old[$i]['name']);
+	    // Rows form history, are printed a bit different
+	    if ($old[0]['translator'] == $old[$i]['translator'])
+	      unset($old[$i]['translator']);
+	    $old[$i]['class'] = $old[count($old) - 1]['status'];
+	  }
 
-		$old[0]['button'] = "<a href='$PHP_SELF?history=".implode(",", array_diff($expanded, array($old[0]['name'])))."#{$old[0]['name']}'>-</a>";
-		$old[0]['class'] = $old[count($old) - 1]['status'];
+	  $old[0]['button'] = "<a href='$PHP_SELF?history=".implode(",", array_diff($expanded, array($old[0]['name'])))."#{$old[0]['name']}'>-</a>";
+	  $old[0]['class'] = $old[count($old) - 1]['status'];
 
-		$old[count($old) - 1]['history'] = $old;
-		$data[] = array_pop($old);
-		$data[count($data) - 1]['name'] = $cur_name;
-	    } else {
-		// Else we'll only keep the last
-		$old[count($old) - 1]['button'] = "<a href='$PHP_SELF?history=$history,{$old[0]['name']}#{$old[0]['name']}'>+</a>";
-		$data[] = array_pop($old);
-	    }
+	  $old[count($old) - 1]['history'] = $old;
+	  $data[] = array_pop($old);
+	  $data[count($data) - 1]['name'] = $cur_name;
+	} else {
+	  // Else we'll only keep the last
+	  $old[count($old) - 1]['button'] = "<a href='$PHP_SELF?history=$history,{$old[0]['name']}#{$old[0]['name']}'>+</a>";
+	  $data[] = array_pop($old);
 	}
+      }
 
-	unset($old);
+      unset($old);
     }
 
     // If the former record has a diff type, we can process the former type.
-    if(isset($data) && ($var['type'] != $data[0]['type'])) {
-	echo "<tr><td colspan='3'><h3>{$data[0]['type']}</h3></td></tr>";
-	// Sort the array
-	usort($data, $cmpfunc);
+    if (isset($data) && ($var['type'] != $data[0]['type']))
+    {
+      echo "<tr><td colspan='3'><h3>{$data[0]['type']}</h3></td></tr>\n";
+      // Sort the array
+      usort($data, $cmpfunc);
 
-	// Loop over all 'name's
-	for($i = 0; $data[$i]; $i++) {
-	    // If we have a history, put the records of the 'history' in the 
-	    // data array, so it will also be printed.
-	    if($data[$i]['history']) {
-		array_splice($data,$i,1,$data[$i]['history']);
-	    }
-	    // Process the fields a bit
-	    $data[$i]['translator'] = $data[$i]['translator'];
-	    $data[$i]['date'] = preg_replace("/(\d{4})(\d{2})(\d{2}).*/","\\1-\\2-\\3", $data[$i]['date']);
-	    $data[$i]['class'] = ($data[$i]['class']
-				 ? $data[$i]['class']
-				 : $data[$i]['status']);
-	    // If status is BTS, make a link.
-	    $data[$i]['status'] = ($data[$i]['status'] == "BTS"
-				   && $data[$i]['bugnr']
-				  ? "<a href='http://bugs.debian.org/cgi-bin/bugreport.cgi?bug={$data[$i]['bugnr']}'>BTS</a>"
-				  : $data[$i]['status']);
-	    // If we have a file, make link. File was saved as $id.$exts
-	    $data[$i]['file'] = ($data[$i]['file'] 
-				  ? "<a href='{$data[$i]['id']}.{$data[$i]['file']}'>[{$data[$i]['file']}]</a>"
-				  : "");
-	    // Print a row
-	    echo
+      // Loop over all 'name's
+      for ($i = 0; $data[$i]; $i++)
+      {
+	// If we have a history, put the records of the 'history' in the 
+	// data array, so it will also be printed.
+	if ($data[$i]['history'])
+	{
+	  array_splice($data,$i,1,$data[$i]['history']);
+	}
+	// Process the fields a bit
+	$data[$i]['translator'] = $data[$i]['translator'];
+	$data[$i]['date'] = preg_replace("/(\d{4})(\d{2})(\d{2}).*/","\\1-\\2-\\3", $data[$i]['date']);
+	$data[$i]['class'] = ($data[$i]['class']
+			     ? $data[$i]['class']
+			     : $data[$i]['status']);
+	// If status is BTS, make a link.
+	$data[$i]['status'] = ($data[$i]['status'] == "BTS"
+			      && $data[$i]['bugnr']
+			      ? "<a href='http://bugs.debian.org/{$data[$i]['bugnr']}'>BTS</a>"
+			      : $data[$i]['status']);
+	// If we have a file, make link. File was saved as $id.$exts
+	$data[$i]['file'] = ($data[$i]['file'] 
+			    ? "<a href='$team/{$data[$i]['id']}.{$data[$i]['file']}'>[{$data[$i]['file']}]</a>"
+			    : "");
+	// Print a row
+	echo
  "<tr class='{$data[$i]['class']}'>".
    "<td".($data[$i]['name']?'':" class='nobg' ").">".
      "<a name='{$data[$i]['name']}'></a>{$data[$i]['button']}".
@@ -199,17 +213,18 @@ while(($var = mysql_fetch_assoc($res)) or $old[0]) {
    "<td>{$data[$i]['date']}</td>".
    "<td>{$data[$i]['file']}</td>".
  "</tr>\n";
-	}
+      }
 
-	unset($old);
-	unset($data);
+      unset($old);
+      unset($data);
     }
 
     // Make the current record the former.
     $old[] = $var;
-}
+  }
 
-mysql_close($link);
+  mysql_close($link);
+
 ?>
   </table>
 
@@ -223,3 +238,4 @@ mysql_close($link);
   </p>
 </body>
 </html>
+

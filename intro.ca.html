@@ -1,0 +1,470 @@
+<html>
+<head>
+  <title>Projecte de localització de Debian al català</title>
+</head>
+<body>
+  <table border="0" cellpadding="3" cellspacing="0" align="center" summary="">
+    <tr>
+      <td>
+        <a href="http://www.debian.org/">
+	  <img src="http://www.debian.org/logos/openlogo-nd-50.png" border="0" hspace="0" vspace="0" alt="" width="50" height="61" />
+	</a>
+	<a href="http://www.debian.org/">
+	  <img src="http://www.debian.org/Pics/debian.jpg" border="0" hspace="0" vspace="0" alt="Debian Project" width="179" height="61" />
+	</a>
+      </td>
+    </tr>
+  </table>
+
+  <h1>Projecte de localització de Debian al català</h1>
+
+  <p>
+    Debian és un Sistema Operatiu (SO) lliure per l'ordinador. Un sistema
+    operatiu és un conjunt de programes bàsics i utilitats que fan que
+    l'ordinador funcioni. Debian utilitza el kernel Linux (el nucli d'un
+    sistema operatiu), si bé la majoria de les eines bàsiques provenen del
+    projecte GNU; és per això el nom GNU/Linux.
+  </p>
+
+  <p>
+    Debian GNU/Linux ofereix més que un SO: hi inclou més de 8710 paquets,
+    programari precompilat distribuït en un format que fa més senzilla la
+    instal·lació a l'ordinador.
+  </p>
+
+  <ul>
+    <li>
+      <a href="#participar">Com puc participar en el procés de localització?</a>
+    </li>
+    <ol>
+      <li>
+        <a href="#traduccio">Com puc participar en la traducció de mòduls?</a>
+      </li>
+      <li>
+        <a href="#revisio">Com puc participar en la revisió de mòduls?</a>
+      </li>
+    </ol>
+    <li>
+      <a href="#eines">Quina eina puc utilitzar per traduir els mòduls?</a>
+    </li>
+    <li>
+      <a href="#estat">Quin és l'estat actual de les traduccions?</a>
+    </li>
+    <li>
+      <a href="#missatge">Missatge de benvinguda</a>
+    </li>
+  </ul>
+
+  <a name="participar"><h2>Com puc participar en el procés de localització?</h2></a>
+  </a>
+
+  <p>
+    La participació en el procés de localització es pot dividir en:
+  </p>
+
+  <ul>
+    <li><a href="#traduccio">Traducció de mòduls</a></li>
+    <li><a href="#revisio">Revisió de mòduls</a></li>
+  </ul>
+
+  <a name="traduccio"><h3>Com puc participar en la traducció de mòduls?</h3></a>
+
+  <p>
+    Si vols ajudar-nos en la traducció d'algun mòdul de Debian segueix els
+    passos següents:
+  </p>
+
+  <p>
+    1. Subscriu-te a la llista de localització de Debian en català a través de
+    l'URL:
+  </p>
+
+  <table border="0" bgcolor="#E0E0E0" width="80%"><tr><td>
+    <a href="http://lists.debian.org/debian-l10n-catalan/">http://lists.debian.org/debian-l10n-catalan/</a>
+  </td></tr></table>
+
+  <p>
+    2. Per donar coherència a la traducció d'un projecte tan gran és important
+    familiaritzar-se amb les regles d'estil i terminologia que s'han decidit
+    adoptar en el procés de localització. Aquestes regles i terminologia les
+    pots trobar als següents documents:
+  </p>
+
+  <table border="0" bgcolor="#E0E0E0" width="80%"><tr><td>
+    <ul>
+      <li>
+	Recull de termes:
+	<a href="http://www.softcatala.org/projectes/eines/recull/3.0/recull.htm">http://www.softcatala.org/projectes/eines/recull/3.0/recull.htm</a>
+      </li>
+      <li>
+	Guia d'estil:
+	<a href="http://www.softcatala.org/projectes/eines/guiaestil/guiaestil.htm">http://www.softcatala.org/projectes/eines/guiaestil/guiaestil.htm</a>
+      </li>
+    </ul>
+  </td></tr></table>
+
+  <p>
+    3. Utilitza la informació de <a href="http://ca.debian.net/">http://ca.debian.net/</a>
+    per saber els mòduls que ja s'han assignat o que ja s'han traduït. Accedeix
+    a la direcció <a href="http://gluck.debian.org/~pmachard/l10n/material">http://gluck.debian.org/~pmachard/l10n/material/</a>
+    per localitzar algun mòdul que encara no s'ha traduït.
+  </p>
+
+  <p>
+    4. Envia una <b>[petició de traducció]</b> a la llista utilitzant el format
+    que s'especifica a <a href="http://ca.debian.net/pseudo-urls">http://ca.debian.net/pseudo-urls</a>.
+  </p>
+
+  <table border="0" bgcolor="#E0E0E0" width="80%"><tr><td>
+    <pre>
+From:	Nom traductor &lt;adreça@correu&gt;
+Per a:	debian-l10n-catalan@lists.debian.org
+Assumpte: [ITT] po-debconf://nom-paquet
+Assumpte: [ITT] po://nom-paquet/cami-font-paquet
+Assumpte: [ITT] debian-installer://nom-paquet/cami-font-paquet
+Assumpte: [ITT] wml://adreça_web
+    </pre>
+  </td></tr></table>
+
+  <p>
+    5. Tradueix el mòdul seguint les indicacions de la documentació del segon
+    punt. Si tens dubtes de traducció, pots demanar consell a la llista.
+  </p>
+
+  <p>
+    6. Procura utilitzar la següent capçalera:
+  </p>
+
+  <table border="0" bgcolor="#E0E0E0" width="80%"><tr><td>
+    <pre>
+   # 'nom del paquet' translation to Catalan.
+   # Copyright (C) 2004 Free Software Foundation, Inc.
+   # 'nom del traductor' &lt;adreça@correu&gt; 2004
+
+   Project-Id-Version: PACKAGE VERSION
+   Report-Msgid-Bugs-To:
+   POT-Creation-Date: YEAR-MO-DA HO:MI+ZONE
+   PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE
+   Last-Translator: 'nom del traductor' &lt;adreça@correu&gt;
+   Language-Team: Catalan &lt;debian-l10n-catalan@lists.debian.org&gt;
+   MIME-Version: 1.0
+   Content-Type: text/plain; charset=UTF-8
+   Content-Transfer-Encoding: 8bit
+    </pre>
+  </td></tr></table>
+
+  <p>
+    7. Procura utilitzar la codificació UTF-8. Pots utilitzar l'eina «msgconv»
+    amb l'opció -t utf-8 per a la conversió ISO-8859-1 -&gt; UTF-8.
+  </p>
+
+  <p>
+    8. Envia una <b>[sol·licitud de revisió]</b> a la llista amb el format que
+    s'especifica a <a href="http://ca.debian.net/pseudo-urls">http://ca.debian.net/pseudo-urls</a>
+    per tal que els companys puguin comentar-te els errors que hi detectin.
+  </p>
+
+  <table border="0" bgcolor="#E0E0E0" width="80%"><tr><td>
+    <pre>
+From:	Nom traductor &lt;adreça@correu&gt;
+Per a:	debian-l10n-catalan@lists.debian.org
+Assumpte: [RFR] po-debconf://nom-paquet
+Assumpte: [RFR] po://nom-paquet/cami-font-paquet
+Assumpte: [RFR] debian-installer://nom-paquet/cami-font-paquet
+Assumpte: [RFR] wml://adreça_web
+    </pre>
+  </td></tr></table>
+
+  <p>
+    9. Discuteix les modificacions que puguin plantejar els companys arran de
+    la revisió utilitzant la llista de correu.
+  </p>
+
+  <p>
+    10. Realitza les modificacions oportunes i envia una nova <b>[sol·licitud
+    de revisió]</b> amb el format que s'especifica a
+    <a href="http://ca.debian.net/pseudo-urls">http://ca.debian.net/pseudo-urls</a>.
+  </p>
+
+  <table border="0" bgcolor="#E0E0E0" width="80%"><tr><td>
+    <pre>
+From:	Nom traductor &lt;adreça@correu&gt;
+Per a:	debian-l10n-catalan@lists.debian.org
+Assumpte: [RFR2] po-debconf://nom-paquet
+Assumpte: [RFR2] po://nom-paquet/cami-font-paquet
+Assumpte: [RFR2] debian-installer://nom-paquet/cami-font-paquet
+Assumpte: [RFR2] wml://adreça_web
+    </pre>
+  </td></tr></table>
+
+  <p>
+    11. Afegeix la referència de la persona que ha realitzat la revisió a la
+    capçalera de la traducció:
+  </p>
+
+  <table border="0" bgcolor="#E0E0E0" width="80%"><tr><td>
+    <pre>
+   # 'nom del paquet' translation to Catalan.
+   # Copyright (C) 2004 Free Software Foundation, Inc.
+   # 'nom del traductor' &lt;adreça@correu&gt; 2004
+   # 'nom del revisor' &lt;adreça@correu&gt; 2004
+    </pre>
+  </td></tr></table>
+
+  <p>
+    12. Quan no hi hagi missatges d'<b>[aplaçament per revisió]</b>, hagin
+    finalitzat les discussions corresponents a la <b>[sol·licitud de
+    revisió]</b> i hagin passat tres dies des d'aquesta, envia un missatge
+    d'<b>[última oportunitat de comentaris]</b> amb el format que s'especifica
+    a <a href="http://ca.debian.net/pseudo-urls">http://ca.debian.net/pseudo-urls</a>.
+  </p>
+
+  <table border="0" bgcolor="#E0E0E0" width="80%"><tr><td>
+    <pre>
+From:	Nom traductor &lt;adreça@correu&gt;
+Per a:	debian-l10n-catalan@lists.debian.org
+Assumpte: [LCFC] po-debconf://nom-paquet
+Assumpte: [LCFC] po://nom-paquet/cami-font-paquet
+Assumpte: [LCFC] debian-installer://nom-paquet/cami-font-paquet
+Assumpte: [LCFC] wml://adreça_web
+    </pre>
+  </td></tr></table>
+
+  <p>
+    13. Envia l'última versió del fitxer del mòdul al sistema de gestió
+    d'errors de paquets.
+  </p>
+
+  <table border="0" bgcolor="#E0E0E0" width="80%"><tr><td>
+    <pre>
+From:	Nom traductor &lt;adreça@correu&gt;
+Per a:	submit@bugs.debian.org
+
+Packages: 'nom del paquet'
+Version: versió del paquet
+Severity: wishlist
+Tags: l10n
+    </pre>
+  </td></tr></table>
+
+  <p>
+    14. Envia un missatge de <b>[sistema de seguiment d'errors]</b> amb el
+    format que s'especifica a <a href="http://ca.debian.net/pseudo-urls">http://ca.debian.net/pseudo-urls</a>.
+    El número d'error num_err és l'associat a la petició que heu fet en el
+    punt anterior.
+  </p>
+
+  <table border="0" bgcolor="#E0E0E0" width="80%"><tr><td>
+    <pre>
+From:	Nom traductor &lt;adreça@correu&gt;
+Per a:	debian-l10n-catalan@lists.debian.org
+Assumpte: [BTS#num_err] po-debconf://nom-paquet
+Assumpte: [BTS#num_err] po://nom-paquet/cami-font-paquet
+Assumpte: [BTS#num_err] debian-installer://nom-paquet/cami-font-paquet
+Assumpte: [BTS#num_err] wml://adreça_web
+    </pre>
+  </td></tr></table>
+
+  <a name="revisio"><h3>Com puc participar en la revisió de mòduls?</h3></a>
+
+  <p>
+    1. Subscriu-te a la llista de localització de Debian en català a través de
+    l'URL:
+  </p>
+
+  <table border="0" bgcolor="#E0E0E0" width="80%"><tr><td>
+    <a href="http://lists.debian.org/debian-l10n-catalan/">http://lists.debian.org/debian-l10n-catalan/</a>
+  </td></tr></table>
+
+  <br />
+
+  <p>
+    2. Per donar coherència a la traducció d'un projecte tan gran és important
+    familiaritzar-se amb les regles d'estil i terminologia que s'han decidit
+    adoptar en el procés de localització. Aquestes regles i terminologia les
+    pots trobar als següents documents:
+  </p>
+
+  <ul>
+    <li>Recull de termes: <a href="http://www.softcatala.org/projectes/eines/recull/3.0/recull.htm">http://www.softcatala.org/projectes/eines/recull/3.0/recull.htm</a>
+    <li>Guia d'estil: <a href="http://www.softcatala.org/projectes/eines/guiaestil/guiaestil.htm">http://www.softcatala.org/projectes/eines/guiaestil/guiaestil.htm</a>
+  </ul>
+
+  <p>
+    3. Utilitza la informació de http://ca.debian.net per saber els mòduls que
+    estan en procés de revisió, <b>[sol·licitud de revisió]</b> segons el
+    format especificat a <a href="http://ca.debian.net/pseudo-urls">http://ca.debian.net/pseudo-urls</a>.
+  </p>
+
+  <p>
+    4. Revisa el modul seguint les indicacions de la documentació del segon
+    punt. Si tens dubtes de traducció, pots demanar consell a la llista.
+  </p>
+
+  <p>
+    5. En cas d'iniciar la revisió i necessitar més temps del previst envia un
+    missatge d'<b>[aplaçament de revisió]</b> segons el format especificat a
+    <a href="http://ca.debian.net/pseudo-urls">http://ca.debian.net/pseudo-urls</a>.
+  </p>
+
+  <table border="0" bgcolor="#E0E0E0" width="80%"><tr><td>
+    <pre>
+From:	Nom revisor &lt;adreça@correu&gt;
+Per a:	debian-l10n-catalan@lists.debian.org
+Assumpte: [ITR] po-debconf://nom-paquet
+Assumpte: [ITR] po://nom-paquet/cami-font-paquet
+Assumpte: [ITR] debian-installer://nom-paquet/cami-font-paquet
+Assumpte: [ITR] wml://adreça_web
+    </pre>
+  </td></tr></table>
+
+  <p>
+    6. Envia un missatge a la llista amb les propostes de revisió o simplement
+    per donar conformitat d'haver-la realitzat.
+  </p>
+
+  <p>
+    Gràcies per la teva col·laboració!
+  </p>
+
+  <a name="eines"><h2>Quina eina puc utilitzar per traduir els mòduls?</h2></a>
+
+  <p>
+    Nosaltres recomanem les eines següents, però es poden fer servir d'altres.
+  </p>
+
+  <ul>
+    <li>Eines per a GNU/Linux
+      <ul>
+	<li>
+	  <a href="http://i18n.kde.org/tools/kbabel/">KBabel</a> -
+	  El Kbabel és l'eina de localització creada al voltant del projecte
+	  d'escriptori KDE. És una eina molt completa que permet traduir
+	  fitxers PO i treballar amb memòries de traducció.
+	</li>
+	<li>
+	  <a href="http://www.gtranslator.org/">Gtranslator</a> -
+	  El Gtranslator és l'eina de localització creada al voltant del
+	  projecte d'escriptori GNOME. És una eina molt completa que permet
+	  traduir fitxers PO i treballar amb memòries de traducció.
+	</li>
+	<li>
+	  <a href="http://www.gnu.org/software/emacs/">Emacs-po-mode</a>
+	</li>
+      </ul>
+    </li>
+    <li>Eines per a Microsoft Windows
+      <ul>
+	<li>
+	  <a href="http://poedit.sf.net/">PoEdit</a> -
+	  És una eina de localització per a Windows que permet treballar amb
+	  fitxers PO i usar memòries de traducció. Es troba traduïda al català.
+	</li>
+      </ul>
+  </ul>
+
+
+  <a name="estat"><h2>Quin és l'estat actual de les traduccions?</h2></a>
+
+  <p>
+    Consulta l'estat actual dels de les traduccions dels mòduls de Debian a:
+  </p>
+
+  <table border="0" bgcolor="#E0E0E0" width="80%"><tr><td>
+    <a href="http://ca.debian.net">http://ca.debian.net/</a>
+  </td></tr></table>
+
+
+  <a name="missatge"><h2>Missatge de benvinguda</h2>
+
+  <table border="0" bgcolor="#E0E0E0" width="80%"><tr><td>
+    <pre>
+Hola llista!
+
+Com ja sabeu, l'equip de traduccions al català ha estat parat prou temps ja,
+després d'un inici prou productiu.
+
+Quan vam començar en l'agost de 2001, hi havia molt treball i erem relativament
+poca gent fent coses, però vam aconseguir tenir les parts més importants de
+la web traduïdes en pocs messos. Aquella inèrcia es va perdre perque jo era
+l'únic desenvolupador catalanoparlant amb un compte en Debian, i el volum de
+traduccions em va començar a resultar impossible de gestionar, ja que
+normalment acabava sent l'únic que les revisava, i algunes traduccions em
+costaven molt de revisar, i així va ser fins que vaig decidir que així no es
+podia treballar, i es va intentar establir un sistema de correccions, que va
+morir prou ràpidament quan el grup de correctors també es va veure curt de
+temps per fer-ho. Des d'aquell moment, les contribucions que s'han fet han
+sigut esporàdiques i descoordinades.
+
+Com ja fa temps que tenim altres desenvolupadors catalans (el ja famós
+"Polish Cabal" ;) Guillem Jover (àlias Slashdot dude!) i jo hem estat pensant
+com tornar a fer que l'equip siga dinàmic i productiu, i distribuint la càrrega
+de coordinació entre tots els que tinguen comptes a Debian per a que ningú es
+creme. Ara mateix, seriem: Jordi Mallach (jordi), Guillem Jover (guillem),
+Robert Millan (rmh), Jesús Climent (mooch), Sergio Talens (sto)
+i Steve Langasek (vorlon).
+
+Hem fet una llista de les coses que cal fer, i per damunt de tot, com fer-les.
+http://people.debian.org/~guillem/catalan/TODO.
+
+En principi, la nostra prioritat seria fer que tots els missatges que surten
+quan s'instal·la Sarge siguen en català. Això inclou Debian-Installer, les
+plantilles debconf dels paquets inclosos al sistema base, els programes en sí
+que s'utilitzen al sistema base, i intentar mantenir al dia les pàgines web
+ja traduïdes, i traduir alguna nova important si cal (que caldrà, ja ho dic
+jo... ;) Però a banda d'això, tenim també moltes més tasques per davant: la
+resta de plantilles debconf sense traduir és la més evident.
+
+Per últim, tenim una llista de llocs d'on es podria treure ajuda.
+
+COORDINACIÓ
+
+Si hem trigat tant de temps en enviar aquesta proposta era perquè no sabíem
+molt bé com volíem fer tot açò (per web? per correu?), i finalment hem optat
+per preguntar als coordinadors dels equips més dinàmics del moment (el francès
+i l'holandès) i hem descobert que ho tenen muntat prou bé.
+
+Ací teniu una explicació de com funcionen aquests dos equips, i és la manera
+que ens agradaria adoptar per l'equip català:
+
+http://lists.debian.org/debian-i18n/2004/debian-i18n-200401/msg00034.html
+
+TERMINOLOGIA
+
+En el passat, havíem acordat seguir la guia d'estil de Softcatalà i el recull
+de termes tecnològics i el termcat per a les nostres traduccions.
+
+http://www.softcatala.org/projectes/eines/guiaestil/guiaestil.htm
+http://www.softcatala.org/projectes/eines/recull/3.0/recull.htm
+
+Tant els projectes de traducció Mozilla, OpenOffice, GNOME, KDE i segurament
+altres importants utilitzen aquestes regles d'estil i terminologia, així que
+pensem que hauríem de seguir per aquest camí. De tota manera, el món de Debian
+té el seu lèxic propi (concepte distint per al terme "distribució", etc.) i
+també necessitarem un recull propi. Antoni Bella va anar recopilant un recull
+per Debian en l'anterior etapa, segurament encara el té i el podrem fer servir.
+
+COM COL·LABORAR
+
+Tota l'activitat estarà a la llista oficial de traduccions al català,
+debian-l10n-catalan@lists.debian.org, així que només teniu que subscriure-vos
+i demanar alguna tasca.
+Segurament també obrirem un projecte a Alioth on ficarem les pàgines web
+dinàmiques amb les estadístiques de les traduccions, etc., que complementaria
+la informació general que es troba en
+http://www.debian.org/international/Catalan/
+
+Bé, esperem comentaris, i si la gent està d'acord i es veu que hi ha
+prou gent per dur-lo endavant (això no podrà funcionar si no tenim tant
+traductors com correctors), Guillem i jo ficarem en marxa el rotllo dels
+correus i tot això, i ja es parla en més calma, a banda de fer la crida
+a les comunitats catalanes per a veure si treiem un equip prou gran i
+podem avançar a bon pas.
+
+Jordi i Guillem
+    </pre>
+  </td></tr></table>
+
+</body>
+</html>
+

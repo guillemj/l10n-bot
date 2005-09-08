@@ -29,7 +29,7 @@
   
 <!--<center><code>[&lt;state&gt;]&nbsp;&lt;type&gt;://&lt;name&gt;</code></center>-->
   <center>
-    <code>[(ITT|RFR|RFR2|LCFC|BTS#&lt;nrerror&gt;)]&nbsp;(po-debconf|po|debian-installer|man|wml)://&lt;nom&gt;</code>
+    <code>[(ITT|RFR|RFR2|LCFC|BTS#&lt;nrerror&gt;)]&nbsp;(po-debconf|po|debian-installer|man|manual|wml)://&lt;nom&gt;</code>
   </center>
 
   <p>
@@ -116,7 +116,7 @@
   </ul>
 
   <p>
-    El <i>tipus</i> pot ser: po-debconf, debian-installer, po, man o wml.
+    El <i>tipus</i> pot ser: po-debconf, debian-installer, po, man, manual o wml.
     L'estructura del <i>nom</i> està en funció del tipus escollit. En
     principi només és un identificador, però és molt recomanable seguir
     les regles següents:
@@ -127,7 +127,8 @@
    <li><code>po://nom-paquet/cami-font-paquet</code></li>
    <li><code>debian-installer://nom-paquet/cami-font-paquet</code></li>
    <li><code>wml://adreça_web</code></li>
-   <li><b>Encara no funciona</b> <code>man://nom-paquet/seccio/assumpte</code></li>
+   <li><code>manual://nom-paquet/cami-font-paquet</code></li>
+   <li><code>man://nom-paquet/seccio/assumpte</code></li>
   </ul>
 
   <p>

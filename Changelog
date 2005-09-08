@@ -1,3 +1,23 @@
+2004-11-30  Guillem Jover <guillem@debian.org>
+
+	Release 0.4.
+
+	* l10n-bot: Remove tmpdir on exit.
+
+2004-09-25  Guillem Jover <guillem@debian.org>
+
+	* l10n-closebugs: Switch to bts2ldap.
+
+2004-07-14  Guillem Jover <guillem@debian.org>
+
+	* intro.ca.html: New file.
+
+2004-04-04  Guillem Jover <guillem@debian.org>
+
+	* intro.ca.txt: New file.
+
+[...]
+
 2004-02-25  Guillem Jover <guillem@debian.org>
 
 	* Release 0.3.

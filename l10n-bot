@@ -35,7 +35,14 @@ use DBI;
 my $db_name = "debian_l10n_ca";
 my $db_user = "USER";
 my $db_passwd = "PASSWD";
-my $dir = "/site/ca.debian.net/www";
+my $db_host = "localhost";
+my $db_port = 3306;
+
+my $basedir = "/srv/ca.debian.net";
+my $tmpdir = "$basedir/tmp/$$";
+my $dir = "$basedir/www";
+
+my $team = "ca";
 
 sub cvt_utf8
 {
@@ -72,13 +79,20 @@ sub get_entity_filenames {
 
 #@stati=(ITT,RFR,RFR2,LCFC,SUBMIT,CLOSE);
 # Define which filename is appropriate for wich type of translation
-%exts=('po-debconf' => 'po', 'debian-installer' => 'po', po => 'po',
-       'man' => 'man',
+%exts=('po-debconf' => 'po',
+       'debian-installer' => 'po',
+       'po' => 'po',
+       'man' => '(man|pod|[0-9])',
+       'manual' => '(sgml|xml|html|txt)',
        'wml' => 'wml');
+
+if (! -d $tmpdir) {
+  mkdir $tmpdir;
+}
 
 ### Create parser, and set some parsing options:
 my $parser = new MIME::Parser;
-$parser->output_dir("/tmp");
+$parser->output_dir($tmpdir);
 
 ### Parse input:
 $entity = $parser->parse(\*STDIN) or die "parse failed\n";
@@ -87,8 +101,10 @@ $head = $entity->head;
 $subject = $head->get('Subject');
 $subject =~ s/\n\s*//g;
 
-if (!($subject =~ /^\[(ITT|RFR|RFR2|LCFC|BTS#\d+|DONE)\]\s*(po-debconf|debian-installer|po|man|wml):\/\/([^\s]*)/)) {
-    $parser->filer->purge(); exit;
+if (!($subject =~ /^\[(ITT|RFR|RFR2|LCFC|BTS#\d+|DONE)\]\s*(po-debconf|debian-installer|po|man|manual|wml):\/\/([^\s]*)/)) {
+    $parser->filer->purge();
+    rmdir $tmpdir;
+    exit;
 }
 
 $status = $1;
@@ -105,8 +121,10 @@ $wd->handler('UTF-8' => "KEEP", 'US-ASCII' => "KEEP", 'raw' => "KEEP",
 $translator = $wd->decode($head->get('From'));
 $translator =~ s/\s<[^>]*>\s//;
 $translator =~ s/^\s*([^\s]*)\s*$/$1/;
-$file = 0;
-$bugnr = 0;
+
+my $tmpfile = 0;
+my $bugnr = 0;
+my $ext = 0;
 
 # Extract bugnr, chop it of
 if ($status =~ /BTS/) {
@@ -125,30 +143,43 @@ if (($status =~ /(RFR|RFR2|LCFC)/) and ($entity->parts() > 0)) {
    my @filenames = get_entity_filenames($entity);
 
    for $path (@filenames) {
-       if ($path =~ /\.$exts{$type}$/) {
+       # Decompress
+       if ($path =~ /.gz$/) {
+          system("gunzip", "$path");
+          $path =~ s/.gz$//;
+       } elsif ($path =~ /.bz2$/) {
+          system("bunzip2", "$path");
+          $path =~ s/.bz2$//;
+       }
+
+       if ($path =~ /\.($exts{$type})$/) {
 	  $tmpfile = $path;
-	  $file = $exts{$type};
+	  $ext = $1;
        }
    }
 }
 
-$dsn = "DBI:mysql:database=$db_name;host=localhost;port=3306";
+$dsn = "DBI:mysql:database=$db_name;host=$db_host;port=$db_port";
 $link = DBI->connect($dsn, $db_user, $db_passwd);
 
 # If we have an ITT, we can have multiple packagename {php4,apache,mysql}
 ($status =~ /^ITT$/) and ($name =~ s/{([^}]*)}/$1/);
 
 for $tmpname (split(',',$name)){
-    $link->do("INSERT INTO translation VALUES(null,'$date','$tmpname','$status','$type','$translator','$file','$bugnr')");
+    $link->do("INSERT INTO translation VALUES(null,'$date','$tmpname','$status','$type','$translator','$ext','$bugnr')");
     $insertid = $link->{'mysql_insertid'};
-    if ($file) {
+    if ($tmpfile) {
 	use File::Copy;
-	$newfile = "$dir/$insertid.$exts{$type}";
+	$newfile = "$dir/$team/$insertid.$ext";
 	copy($tmpfile, $newfile);
     }
 }
 
-$link->disconnect();
+# Clean
 
+$link->disconnect();
 $parser->filer->purge();
+rmdir $tmpdir;
+
+1;
 

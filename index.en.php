@@ -191,7 +191,7 @@ while(($var = mysql_fetch_assoc($res)) or $old[0]) {
      "<a name='{$data[$i]['name']}'></a>{$data[$i]['button']}".
    "</td>".
    "<td".($data[$i]['name']?" style='padding-right:2em;' ":" class='nobg' ").">{$data[$i]['name']}</td>".
-   "<td ".($data[$i]['name']?" style='font-style:italic' ":" class='nobg' ").">{$data[$i]['translator']}</td>".
+   "<td".($data[$i]['name']?" style='font-style:italic' ":" class='nobg' ").">{$data[$i]['translator']}</td>".
    "<td>{$data[$i]['status']}</td>".
    "<td>{$data[$i]['date']}</td>".
    "<td>{$data[$i]['file']}</td>".
