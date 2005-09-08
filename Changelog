@@ -1,4 +1,17 @@
-2004-06-05  Guillem Jover <guillem@debian.org>
+2004-01-30  Guillem Jover <guillem@debian.org>
+
+	* Release 0.2.
+	* l10n-bot-needed: New file.
+	* pseudo-urls.html: Change charset to UTF-8.
+	* l10n-bot: Reindent. Move db data to variables. Possibly convert
+	'From' header from quoted-printable to UTF-8.
+	(cvt_utf8): New function.
+	* l10n-closebugs: Update databese name. Reindent.
+	* index.php: Switch to UTF-8. Do not use 'htmlentities' on translator
+	field. Fix typo.
+	(language_name): New variable. Use it instead of language.
+
+2004-01-29  Guillem Jover <guillem@debian.org>
 
 	* Release 0.1.2.
 	* l10n-bot (get_entity_filenames): New function.

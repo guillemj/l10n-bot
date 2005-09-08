@@ -25,6 +25,7 @@
 
 $webmaster = "webmaster@ca.debian.net";
 $language = "catalan";
+$language_name = "Catalan";
 
 $db_name = "debian_l10n_ca";
 $db_user = "USER";
@@ -36,7 +37,7 @@ $db_passwd = "PASSWD";
      "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
   <title>Coordination of debian-l10n-<?php echo $language; ?></title>
   <style type='text/css'>
     .ITT {background-color:#ff6d6d;}
@@ -66,14 +67,14 @@ $db_passwd = "PASSWD";
 
   <p>
     This page is made to aid the coordination of translating debian related
-    text to <?php echo $language; ?>. As documented <a href='pseudo-urls'>here</a>,
+    text to <?php echo $language_name; ?>. As documented <a href='pseudo-urls'>here</a>,
     translators and reviewers use pseudo-urls in the subject of e-mails to
     the debian-l10n-<?php echo $language; ?> list for coordidation.
   </p>
 
   <p>
     A program parses these pseudo-urls and collects the relevant data, which
-    is thendisplayed below. In case of RFR/LCFC messages it will also look
+    is then displayed below. In case of RFR/LCFC messages it will also look
     for an attached file with the right extension (po,wml) <i>Don't know how
     translating manpages works</i>.
   </p>
@@ -169,7 +170,7 @@ while(($var = mysql_fetch_assoc($res)) or $old[0]) {
 		array_splice($data,$i,1,$data[$i]['history']);
 	    }
 	    // Process the fields a bit
-	    $data[$i]['translator'] = htmlentities($data[$i]['translator']);
+	    $data[$i]['translator'] = $data[$i]['translator'];
 	    $data[$i]['date'] = preg_replace("/(\d{4})(\d{2})(\d{2}).*/","\\1-\\2-\\3", $data[$i]['date']);
 	    $data[$i]['class'] = ($data[$i]['class']
 				 ? $data[$i]['class']

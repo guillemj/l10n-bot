@@ -2,6 +2,7 @@
 #
 # l10n-bot -- Parse emails on stdin for psuedo-urls used on debian-l10n-*@
 # Copyright (C) 2003-2004 Tim Dijkstra
+# Copyrigth (C) 2004 Guillem Jover
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -19,17 +20,36 @@
 #
 # FUNCTION:
 #  This program will parse emails on stdin for psuedo-urls in the subject used
-#  on debian-l10n-*@l.d.o for coordination, If the subject starts with 
-#  [(ITT|RFR|RFR2|LCFC|BTS|CLOSE)] it is further processed. This means that 
-#  info found in this url is put in an MySQL database. In case where it starts 
-#  with [(RFR|LCFC)] the last file that has an appropriate filename extension 
+#  on debian-l10n-*@l.d.o for coordination, If the subject starts with
+#  [(ITT|RFR|RFR2|LCFC|BTS|CLOSE)] it is further processed. This means that
+#  info found in this url is put in an MySQL database. In case where it starts
+#  with [(RFR|LCFC)] the last file that has an appropriate filename extension
 #  will be saved to disk.
 #  See also pseudo-urls.html
 
+use Text::Iconv;
 use MIME::Parser;
+use MIME::WordDecoder;
 use DBI;
 
-# Search recursively all entity filenames
+my $db_name = "debian_l10n_ca";
+my $db_user = "USER";
+my $db_passwd = "PASSWD";
+my $dir = "/site/ca.debian.net/www";
+
+sub cvt_utf8
+{
+  my ($data, $charset, $decoder) = @_ ;
+
+  if ($data) {
+    my $converter = Text::Iconv->new($charset, "UTF-8");
+    return $converter->convert($data);
+  } else {
+    return "";
+  }
+}
+
+# Recursive routine for finding the entity filenames.
 sub get_entity_filenames {
     my ($entity) = @_;
     my @files;
@@ -52,11 +72,12 @@ sub get_entity_filenames {
 
 #@stati=(ITT,RFR,RFR2,LCFC,SUBMIT,CLOSE);
 # Define which filename is appropriate for wich type of translation
-%exts=('po-debconf'=>'po','debian-installer'=>'po',po=>'po','man'=>'man','wml'=>'wml');
+%exts=('po-debconf'=>'po', 'debian-installer'=>'po', po=>'po',
+       'man'=>'man',
+       'wml'=>'wml');
 
 ### Create parser, and set some parsing options:
 my $parser = new MIME::Parser;
-my $dir = "/var/www/www.famdijkstra.org/debian/l10n";
 $parser->output_dir("/tmp");
 
 ### Parse input:
@@ -65,7 +86,7 @@ $head = $entity->head;
 
 
 
-if( !( $head->get('Subject') =~ /^\[(ITT|RFR|RFR2|LCFC|BTS#\d+|DONE)\]\s*(po-debconf|debian-installer|po|man|wml):\/\/([^\s]*)\s/ ) ){
+if (!($head->get('Subject') =~ /^\[(ITT|RFR|RFR2|LCFC|BTS#\d+|DONE)\]\s*(po-debconf|debian-installer|po|man|wml):\/\/([^\s]*)\s/)) {
     $parser->filer->purge(); exit;
 }
 
@@ -74,39 +95,44 @@ $type = $2;
 $name = $3;
 $date = Date::Format::time2str "%Y%m%d%H%M%S", Date::Parse::str2time($head->get('Date'));
 
+# Create a word quoted-printable converter
+my $wd = new MIME::WordDecoder;
+$wd->handler('UTF-8' => "KEEP", 'US-ASCII' => "KEEP", 'raw' => "KEEP",
+	     '*' => \&cvt_utf8);
+
 # Cut out e-mail adres, trim name
-$translator = $head->get('From');
+$translator = $wd->decode($head->get('From'));
 $translator =~ s/\s<[^>]*>\s//;
 $translator =~ s/^\s*([^\s]*)\s*$/$1/;
 $file=0;
 $bugnr=0;
 
-# Extract bugnr, chop it of 
-if( $status =~ /BTS/ ){
+# Extract bugnr, chop it of
+if ($status =~ /BTS/) {
     $status =~ /^(BTS)#(\d+)$/;
     $status=$1;
     $bugnr=$2;
 }
 
 # In case of po-debconf, it can only be one per package, chop of filename
-if( $type =~ /^po-debconf$/ ){
+if ($type =~ /^po-debconf$/) {
     $name =~ s/^(.*)\/[^\/]*$/$1/;
 }
-    
+
 # Get filename
-if ( ($status =~ /(RFR|RFR2|LCFC)/) and ($entity->parts() > 0) ) {
+if (($status =~ /(RFR|RFR2|LCFC)/) and ($entity->parts() > 0)) {
    my @filenames = get_entity_filenames($entity);
 
    for $path (@filenames) {
        if ($path =~ /\.$exts{$type}$/) {
-	  $tmpfile=$path;
-	  $file=$exts{$type};
+	  $tmpfile = $path;
+	  $file = $exts{$type};
        }
    }
 }
 
-$dsn="DBI:mysql:database=debian;host=localhost;port=3306";
-$link = DBI->connect($dsn, "USER","PASSWORD");
+$dsn = "DBI:mysql:database=$db_name;host=localhost;port=3306";
+$link = DBI->connect($dsn, $db_user, $db_passwd);
 
 # If we have an ITT, we can have multiple packagename {php4,apache,mysql}
 ($status =~ /^ITT$/) and ($name =~ s/{([^}]*)}/$1/);
@@ -114,9 +140,9 @@ $link = DBI->connect($dsn, "USER","PASSWORD");
 for $tmpname (split(',',$name)){
     $link->do("INSERT INTO translation VALUES(null,'$date','$tmpname','$status','$type','$translator','$file','$bugnr')");
     $insertid = $link->{'mysql_insertid'};
-    if($file){
+    if ($file) {
 	use File::Copy;
-	$newfile="$dir/$insertid.$exts{$type}";
+	$newfile = "$dir/$insertid.$exts{$type}";
 	copy($tmpfile,$newfile);
     }
 }

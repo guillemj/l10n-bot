@@ -30,7 +30,7 @@ use Date::Format;
 my $ua = LWP::UserAgent->new;
 $ua->agent('l10n-query/0.1');
 
-$dsn="DBI:mysql:database=debian;host=baardmijt;port=3306";
+$dsn="DBI:mysql:database=debian_l10n_ca;host=localhost;port=3306";
 $link = DBI->connect($dsn, "USER","PASSWORD");
 
 # Get all records with status BTS, In MySQL > 4.1 we could use a subquery
@@ -44,7 +44,7 @@ while (my $row = $query->fetchrow_hashref()){
     $query2 = $link->prepare("SELECT bugnr,name FROM translation WHERE status='DONE' AND bugnr='$row->{'bugnr'}'");
     $query2->execute();
     $query2->rows and next;
-    
+
     # Get BR from BTS 
     my $response = $ua->get("http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=$row->{'bugnr'}");
     if ($response->is_success) {
@@ -65,7 +65,7 @@ while (my $row = $query->fetchrow_hashref()){
 	    $link->do("INSERT INTO translation VALUES(null,NOW(),'$row->{'name'}','DONE','$row->{'type'}','$row->{'translator'}',null,'$row->{'bugnr'}')");
 	}
     }
-    
+
 }
 
 $query->finish();
