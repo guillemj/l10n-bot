@@ -48,7 +48,7 @@ següents:
 
      Recull de termes:
 
-	<http://www.softcatala.org/projectes/eines/recull/3.0/recull.htm>
+	<http://www.softcatala.org/projectes/eines/recull/recull.htm>
 
      Guia d'estil:
 
@@ -123,7 +123,7 @@ següents:
 
      Recull de termes:
 
-	<http://www.softcatala.org/projectes/eines/recull/3.0/recull.htm>
+	<http://www.softcatala.org/projectes/eines/recull/recull.htm>
 
      Guia d'estil:
 
@@ -247,7 +247,7 @@ En el passat, havíem acordat seguir la guia d'estil de Softcatalà i el recull
 de termes tecnològics i el termcat per a les nostres traduccions.
 
 <http://www.softcatala.org/projectes/eines/guiaestil/guiaestil.htm>
-<http://www.softcatala.org/projectes/eines/recull/3.0/recull.htm>
+<http://www.softcatala.org/projectes/eines/recull/recull.htm>
 
 Tant els projectes de traducció Mozilla, OpenOffice, GNOME, KDE i segurament
 altres importants utilitzen aquestes regles d'estil i terminologia, així que
