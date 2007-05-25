@@ -1,5 +1,10 @@
 2007-05-26  Guillem Jover <guillem@debian.org>
 
+	* intro.ca.html: Switch to UTF-8.
+	* intro.ca.txt: Likewise.
+
+2007-05-26  Guillem Jover <guillem@debian.org>
+
 	* intro.ca.html: Update link to the Debian i18n material.
 	* intro.ca.txt: Likewise.
 
