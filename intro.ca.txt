@@ -56,8 +56,8 @@ següents:
 
   3. Utilitza la informació de <http://ca.debian.net/> per saber els mòduls
      que ja s'han assignat o que ja s'han traduït. Accedeix a la direcció
-     <http://people.debian.org/~barbier/l10n/material/> per localitzar algun
-     mòdul que encara no s'ha traduït.
+     <http://i18n.debian.net/material/> per localitzar algun mòdul que
+     encara no s'ha traduït.
 
   4. Envia una [petició de traducció] a la llista utilitzant el format que
      s'especifica a <http://ca.debian.net/pseudo-urls>.

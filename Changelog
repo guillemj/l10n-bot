@@ -1,3 +1,8 @@
+2007-05-26  Guillem Jover <guillem@debian.org>
+
+	* intro.ca.html: Update link to the Debian i18n material.
+	* intro.ca.txt: Likewise.
+
 2007-04-04  Guillem Jover <guillem@debian.org>
 
 	* intro.ca.html: Update link to the latest softcatala catalan
