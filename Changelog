@@ -16,6 +16,11 @@
 
 2004-12-14  Guillem Jover <guillem@debian.org>
 
+	* l10n-closebugs ($query2): Rename to ...
+	($query_done): ... this.
+
+2004-12-14  Guillem Jover <guillem@debian.org>
+
 	* l10n-bot: Add fixed state support.
 	* l10n-closebugs: Likewise.
 	* index.php: Likewise.

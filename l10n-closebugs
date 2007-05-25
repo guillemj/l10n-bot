@@ -3,7 +3,7 @@
 # l10n-closebugs -- Query debian BTS if bugs marked as open are closed.
 #
 # Copyright (C) 2003-2004 Tim Dijkstra
-# Copyright (C) 2004 Guillem Jover
+# Copyright (C) 2004-2005 Guillem Jover
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -65,7 +65,7 @@ my $query = $link->prepare("\
 		SELECT id,bugnr,name,translator,type,date \
 		FROM translation \
 		WHERE status='BTS'");
-my $query2;
+my $query_done;
 
 print " -> query sql: execute\n" if $verbose;
 $query->execute();
@@ -77,15 +77,15 @@ while (my $row = $query->fetchrow_hashref()) {
   # See if there exists a record which shows this bug is closed
   # If so next BTS.
 
-  $query2 = $link->prepare("\
+  $query_done = $link->prepare("\
 		SELECT bugnr,name \
 		FROM translation \
 		WHERE status='DONE' \
 			AND bugnr='$row->{'bugnr'}' \
 			AND name='$row->{'name'}' \
 			AND type='$row->{'type'}'");
-  $query2->execute();
-  $query2->rows and next;
+  $query_done->execute();
+  $query_done->rows and next;
 
   # Get BR from bts2ldap
 
@@ -116,6 +116,6 @@ while (my $row = $query->fetchrow_hashref()) {
 print " -> finish\n" if $verbose;
 
 $query->finish();
-$query2->finish();
+$query_done->finish();
 $link->disconnect();
 
