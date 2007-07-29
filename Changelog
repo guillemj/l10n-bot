@@ -1,3 +1,8 @@
+2007-07-30  Guillem Jover  <guillem@debian.org>
+
+	* bin/l10n-closebugs: Switch from bugs.debian.org to
+	bts2ldap.debian.net for the LDAP server.
+
 2007-07-30  Jordà Polo  <jorda@ettin.org>
             Guillem Jover  <guillem@debian.org>
 

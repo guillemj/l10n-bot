@@ -3,7 +3,7 @@
 # l10n-closebugs -- Query debian BTS if bugs marked as open are closed.
 #
 # Copyright (C) 2003-2004 Tim Dijkstra
-# Copyright (C) 2004-2005 Guillem Jover
+# Copyright (C) 2004-2005, 2007 Guillem Jover
 # Copyright (C) 2007 Jordà Polo
 #
 # This program is free software; you can redistribute it and/or modify
@@ -34,9 +34,9 @@ use Date::Format;
 
 my $team = "ca";
 
-my $bts_host = "bugs.debian.org";
-my $bts_port = 389;
-my $bts_dn = "dc=bugs,dc=debian,dc=org";
+my $bts_host = "bts2ldap.debian.net";
+my $bts_port = 10101;
+my $bts_dn = "dc=current,dc=bugs,dc=debian,dc=org";
 
 my $basedir = "/srv/$team.debian.net";
 my $db_file = $basedir . "/data/$team.db";
