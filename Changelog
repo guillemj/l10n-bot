@@ -16,7 +16,7 @@
 	* www/index.en.php: Likewise.
 	* www/index.php: Likewise.
 
-2007-07-29  Guillem Jover <guillem@debian.org>
+2007-07-29  Guillem Jover  <guillem@debian.org>
 
 	* l10n-bot: Move to ...
 	* bin/l10n-bot: ... here.
@@ -39,54 +39,54 @@
 	* pseudo-urls.en.html: Move to ...
 	* www/pseudo-urls.en.html: ... here.
 
-2007-05-26  Guillem Jover <guillem@debian.org>
+2007-05-26  Guillem Jover  <guillem@debian.org>
 
 	* intro.ca.html: Switch to UTF-8.
 	* intro.ca.txt: Likewise.
 
-2007-05-26  Guillem Jover <guillem@debian.org>
+2007-05-26  Guillem Jover  <guillem@debian.org>
 
 	* intro.ca.html: Update link to the Debian i18n material.
 	* intro.ca.txt: Likewise.
 
-2007-04-04  Guillem Jover <guillem@debian.org>
+2007-04-04  Guillem Jover  <guillem@debian.org>
 
 	* intro.ca.html: Update link to the latest softcatala catalan
 	terminology.
 	* intro.ca.txt: Likewise.
 
-2004-12-14  Guillem Jover <guillem@debian.org>
+2004-12-14  Guillem Jover  <guillem@debian.org>
 
 	* l10n-closebugs ($query2): Rename to ...
 	($query_done): ... this.
 
-2004-12-14  Guillem Jover <guillem@debian.org>
+2004-12-14  Guillem Jover  <guillem@debian.org>
 
 	* l10n-bot: Add fixed state support.
 	* l10n-closebugs: Likewise.
 	* index.php: Likewise.
 
-2004-11-30  Guillem Jover <guillem@debian.org>
+2004-11-30  Guillem Jover  <guillem@debian.org>
 
 	Release 0.4.
 
 	* l10n-bot: Remove tmpdir on exit.
 
-2004-09-25  Guillem Jover <guillem@debian.org>
+2004-09-25  Guillem Jover  <guillem@debian.org>
 
 	* l10n-closebugs: Switch to bts2ldap.
 
-2004-07-14  Guillem Jover <guillem@debian.org>
+2004-07-14  Guillem Jover  <guillem@debian.org>
 
 	* intro.ca.html: New file.
 
-2004-04-04  Guillem Jover <guillem@debian.org>
+2004-04-04  Guillem Jover  <guillem@debian.org>
 
 	* intro.ca.txt: New file.
 
 [...]
 
-2004-02-25  Guillem Jover <guillem@debian.org>
+2004-02-25  Guillem Jover  <guillem@debian.org>
 
 	Release 0.3.
 
@@ -101,7 +101,7 @@
 	* l10n-closebugs: Move db data to variables.
 	* l10n-bot: Reindent. Join multi line 'Subject' headers into one line.
 
-2004-01-30  Guillem Jover <guillem@debian.org>
+2004-01-30  Guillem Jover  <guillem@debian.org>
 
 	Release 0.2.
 
@@ -115,7 +115,7 @@
 	field. Fix typo.
 	(language_name): New variable. Use it instead of language.
 
-2004-01-29  Guillem Jover <guillem@debian.org>
+2004-01-29  Guillem Jover  <guillem@debian.org>
 
 	Release 0.1.2.
 
