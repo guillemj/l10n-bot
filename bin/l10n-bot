@@ -3,6 +3,7 @@
 # l10n-bot -- Parse emails on stdin for psuedo-urls used on debian-l10n-*@
 # Copyright (C) 2003-2004 Tim Dijkstra
 # Copyrigth (C) 2004 Guillem Jover
+# Copyright (C) 2007 Jordà Polo
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -22,7 +23,7 @@
 #  This program will parse emails on stdin for psuedo-urls in the subject used
 #  on debian-l10n-*@l.d.o for coordination, If the subject starts with
 #  [(ITT|RFR|RFR2|LCFC|BTS|CLOSE)] it is further processed. This means that
-#  info found in this url is put in an MySQL database. In case where it starts
+#  info found in this url is put in an SQLite database. In case where it starts
 #  with [(RFR|LCFC)] the last file that has an appropriate filename extension
 #  will be saved to disk.
 #  See also pseudo-urls.html
@@ -32,17 +33,13 @@ use MIME::Parser;
 use MIME::WordDecoder;
 use DBI;
 
-my $db_name = "debian_l10n_ca";
-my $db_user = "USER";
-my $db_passwd = "PASSWD";
-my $db_host = "localhost";
-my $db_port = 3306;
+my $team = "ca";
 
 my $basedir = "/srv/ca.debian.net";
 my $tmpdir = "$basedir/tmp/$$";
 my $dir = "$basedir/www";
 
-my $team = "ca";
+my $db_file = $basedir . "/data/$team.db";
 
 sub cvt_utf8
 {
@@ -110,7 +107,7 @@ if (!($subject =~ /^\[(ITT|RFR|RFR2|LCFC|BTS#\d+|DONE)\]\s*(po-debconf|debian-in
 $status = $1;
 $type = $2;
 $name = $3;
-$date = Date::Format::time2str "%Y%m%d%H%M%S", Date::Parse::str2time($head->get('Date'));
+$date = Date::Format::time2str "%Y-%m-%d %H:%M:%S", Date::Parse::str2time($head->get('Date'));
 
 # Create a word quoted-printable converter
 my $wd = new MIME::WordDecoder;
@@ -159,15 +156,19 @@ if (($status =~ /(RFR|RFR2|LCFC)/) and ($entity->parts() > 0)) {
    }
 }
 
-$dsn = "DBI:mysql:database=$db_name;host=$db_host;port=$db_port";
-$link = DBI->connect($dsn, $db_user, $db_passwd);
+$dsn = "DBI:SQLite:dbname=$db_file";
+$link = DBI->connect($dsn);
 
 # If we have an ITT, we can have multiple packagename {php4,apache,mysql}
 ($status =~ /^ITT$/) and ($name =~ s/{([^}]*)}/$1/);
 
 for $tmpname (split(',',$name)){
-    $link->do("INSERT INTO translation VALUES(null,'$date','$tmpname','$status','$type','$translator','$ext','$bugnr')");
-    $insertid = $link->{'mysql_insertid'};
+    $link->do("UPDATE translations SET status = 'closed' \
+               WHERE name == '$tmpname'");
+    $link->do("INSERT INTO translations VALUES (null, '$tmpname', \
+               '$translator', '$date', '$type', '$status', 'open', '$ext', \
+               '$bugnr')");
+    $insertid = $link->last_insert_id(undef, undef, undef, undef);
     if ($tmpfile) {
 	use File::Copy;
 	$newfile = "$dir/$team/$insertid.$ext";

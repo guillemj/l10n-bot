@@ -1,0 +1,159 @@
+/* $Id$ */
+
+body {
+	margin: 0;
+	padding: 0;
+	color: #222;
+	font-family: sans-serif;
+}
+
+a {
+	color: #3252B2;
+}
+
+hr {
+	display: none;
+}
+
+h1, h2, h3 {
+	font-family: "Junicode", "FreeSerif", serif;
+}
+
+h1 {
+	font-size: 2em;
+}
+
+h2 {
+	margin-bottom: 0.4em;
+	padding-bottom: 4px;
+	font-size: 1.6em;
+	border-bottom: 2px solid #AAA;
+}
+
+h2.translator, h2.history {
+	border: none;
+	font-size: 1.7em;
+}
+
+div.clear {
+	clear: both;
+}
+
+/*
+ * Title and logo
+ */
+
+#header {
+	margin: 0;
+	padding: 10px 20px;
+	background: #EEE url('logo.png') no-repeat right;
+	border-bottom: 1px solid #AAA;
+}
+
+#header h1 {
+	margin: 5px 0;
+}
+
+#header h1 a {
+	color: #222;
+	text-decoration: none;
+}
+
+/*
+ * Main content
+ */
+
+#main {
+	margin: 0 20px;
+}
+
+#main p {
+	font-size: 0.9em;
+	line-height: 1.5em;
+}
+
+#categories {
+	float: left;
+	margin-bottom: 20px;
+	padding: 5px 10px;
+	line-height: 0.5em;
+	background: #FAFAFA;
+	border: 1px solid #DDD;
+	font-size: 0.9em;
+}
+
+#categories p {
+	margin-top: 5px;
+	font-size: 0.95em;
+	line-height: 1.2em;
+}
+
+#categories ul {
+	margin-bottom: 10px;
+	padding-left: 20px;
+}
+
+/*
+ * Tables
+ */
+
+table.sortable {
+	width: 100%;
+	margin-bottom: 1em;
+	border-collapse: collapse;
+	font-size: 0.9em;
+}
+
+table.sortable thead img {
+	text-decoration: none;
+	border-width: 0;
+	display: none;
+}
+
+table.sortable thead th {
+	padding: 6px 6px 6px 5px;
+	color: #3252B2;
+	border-color: #444;
+	border-style: dotted;
+	border-width: 0 0 1px 0;
+	font-family: sans-serif;
+	text-align: left;
+	cursor: pointer;
+}
+
+table.sortable td {
+	padding: 11px 5px;
+	padding: 7px 5px;
+	border-color: #444;
+	border-style: dotted;
+	border-width: 0 0 1px 0;
+	border-width: 1px;
+}
+
+table.sortable td a {
+	text-decoration: underline;
+	color: #333;
+}
+
+/*
+ * Status colours
+ */
+
+table.sortable tr.itt {
+	/*background-color: #FFBE56;*/
+	background-color: #FFB454;
+}
+
+table.sortable tr.rfr, table.sortable tr.rfr2, table.sortable tr.lrfc {
+	/*background-color: #EF8E26;*/
+	background-color: #FFEB44;
+}
+
+table.sortable tr.bts {
+	background-color: #C7EA3C;
+}
+
+table.sortable tr.done {
+	background-color: #81C835;
+}
+

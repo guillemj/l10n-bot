@@ -1,3 +1,21 @@
+2007-07-30  Jordà Polo  <jorda@ettin.org>
+            Guillem Jover  <guillem@debian.org>
+
+	* cgi-bin/l10n: New file
+	* data/ca.kid: Likewise.
+	* data/l10n.sql: Likewise.
+	* www/logo.png: Likewise.
+	* www/sorttable.js: Likewise.
+	* www/style.css: Likewise.
+	* bin/l10n-bot: Switch from MySQL to SQLite.
+	* bin/l10n-closebugs: Likewise.
+	* etc/apache.conf: Add cgi support.
+	* db/l10n_create.sql: Remove.
+	* db/l10n_drop.sql: Likewise.
+	* www/index.ca.php: Likewise.
+	* www/index.en.php: Likewise.
+	* www/index.php: Likewise.
+
 2007-07-29  Guillem Jover <guillem@debian.org>
 
 	* l10n-bot: Move to ...

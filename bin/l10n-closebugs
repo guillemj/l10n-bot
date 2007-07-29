@@ -4,6 +4,7 @@
 #
 # Copyright (C) 2003-2004 Tim Dijkstra
 # Copyright (C) 2004-2005 Guillem Jover
+# Copyright (C) 2007 Jordà Polo
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -31,15 +32,14 @@ use Net::LDAP;
 use Date::Parse;
 use Date::Format;
 
+my $team = "ca";
+
 my $bts_host = "bugs.debian.org";
 my $bts_port = 389;
 my $bts_dn = "dc=bugs,dc=debian,dc=org";
 
-my $db_name = "debian_l10n_ca";
-my $db_user = "USER";
-my $db_passwd = "PASSWD";
-my $db_host = "localhost";
-my $db_port = 3306;
+my $basedir = "/srv/$team.debian.net";
+my $db_file = $basedir . "/data/$team.db";
 
 my $verbose = 0;
 
@@ -54,17 +54,16 @@ $ldap->bind("", 'version' => 3, 'noauth' => 1) or die "ldap bind";
 # Setup SQL
 
 print " -> setup sql\n" if $verbose;
-my $dsn = "DBI:mysql:database=$db_name;host=$db_host;port=$db_port";
-my $link = DBI->connect($dsn, $db_user, $db_passwd) or die "sql connect";
+my $dsn = "DBI:SQLite:dbname=$db_file";
+my $link = DBI->connect($dsn);
 
-# Get all records with status BTS, In MySQL > 4.1 we could use a subquery
-# to not also get all closed bugs (I think...)
+# Get all records with type BTS
 
 print " -> query sql: prepare\n" if $verbose;
 my $query = $link->prepare("\
-		SELECT id,bugnr,name,translator,type,date \
-		FROM translation \
-		WHERE status='BTS'");
+		SELECT id, bugnr, name, translator, category, date \
+		FROM translations \
+		WHERE type = 'BTS' AND status = 'open'");
 my $query_done;
 
 print " -> query sql: execute\n" if $verbose;
@@ -72,20 +71,7 @@ $query->execute();
 
 print " -> query sql: loop\n" if $verbose;
 while (my $row = $query->fetchrow_hashref()) {
-  print "$row->{'bugnr'} $row->{'name'} $row->{'type'}\n" if $verbose;
-
-  # See if there exists a record which shows this bug is closed
-  # If so next BTS.
-
-  $query_done = $link->prepare("\
-		SELECT bugnr,name \
-		FROM translation \
-		WHERE status='DONE' \
-			AND bugnr='$row->{'bugnr'}' \
-			AND name='$row->{'name'}' \
-			AND type='$row->{'type'}'");
-  $query_done->execute();
-  $query_done->rows and next;
+  print "$row->{'bugnr'} $row->{'name'} $row->{'category'}\n" if $verbose;
 
   # Get BR from bts2ldap
 
@@ -103,13 +89,16 @@ while (my $row = $query->fetchrow_hashref()) {
 
   # If it doesn't match with what we have in db, change it.
   if ($bug_date !~ /^$row->{'date'}$/) {
-    $link->do("UPDATE translation SET date='$bug_date' WHERE id='$row->{'id'}'");
+    $link->do("UPDATE translations SET date='$bug_date' WHERE id='$row->{'id'}'");
   }
 
   # If bug is done, create a new record in db to show this
   if ($bug_state =~ /^done$/) {
-    $link->do("INSERT INTO translation \
-	       VALUES(null,NOW(),'$row->{'name'}','DONE','$row->{'type'}','$row->{'translator'}',null,'$row->{'bugnr'}')");
+    $link->do("UPDATE translations SET status='closed' \
+               WHERE id='$row->{'id'}'");
+    $link->do("INSERT INTO translations VALUES (null, '$row->{'name'}', \
+               '$row->{'translator'}', DATETIME('NOW'), '$row->{'category'}', \
+               'DONE', 'closed', null, '$row->{'bugnr'}')");
   }
 }
 
