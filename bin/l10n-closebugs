@@ -102,13 +102,16 @@ while (my $row = $query->fetchrow_hashref()) {
 
   # If it doesn't match with what we have in db, change it
   if ($bug_date !~ /^$row->{'date'}$/) {
+    print " udapting date ($bug_date)\n" if $verbose;
     $link->do("UPDATE translations SET date='$bug_date' WHERE id='$row->{'id'}'");
   }
 
   # If bug is done, create a new record in db to show this
   if ($bug_state =~ /^done$/) {
+    print " marking as closed\n" if $verbose;
     $link->do("UPDATE translations SET status='closed' \
                WHERE id='$row->{'id'}'");
+    print " adding done entry\n" if $verbose;
     $link->do("INSERT INTO translations VALUES (null, '$row->{'name'}', \
                '$row->{'translator'}', DATETIME($sql_time), '$row->{'category'}', \
                'DONE', 'closed', null, '$row->{'bugnr'}')");
