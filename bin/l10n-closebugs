@@ -81,15 +81,21 @@ while (my $row = $query->fetchrow_hashref()) {
 
   my @entries = $result->entries;
   my $entry = $entries[0];
-  my $bug_date = Date::Format::time2str("%Y-%m-%d %H\:%M\:%S",
-					 $entry->get_value('debbugsDate'));
-  my $bug_state = $entry->get_value('debbugsState');
-  print " $bug_state\n" if $verbose;
 
-  # If it doesn't match with what we have in db, change it.
-  if ($bug_date !~ /^$row->{'date'}$/) {
-    $link->do("UPDATE translations SET date='$bug_date' WHERE id='$row->{'id'}'");
+  my $bug_time;
+  my $bug_state;
+
+  if (defined($entry)) {
+    $bug_time = $entry->get_value('debbugsDate');
+    $bug_state = $entry->get_value('debbugsState');
+  } else
+    # If we don't get any entry from LDAP we assume it was closed some time
+    # ago, at least 28 days, which is the time the BTS takes to archive.
+    $bug_time = time() - 28 * 24 * 60 * 60;
+    $bug_state = 'done';
   }
+  my $bug_date = Date::Format::time2str("%Y-%m-%d %H\:%M\:%S", $bug_time);
+  print " $bug_state\n" if $verbose;
 
   # If bug is done, create a new record in db to show this
   if ($bug_state =~ /^done$/) {
@@ -98,6 +104,9 @@ while (my $row = $query->fetchrow_hashref()) {
     $link->do("INSERT INTO translations VALUES (null, '$row->{'name'}', \
                '$row->{'translator'}', DATETIME('NOW'), '$row->{'category'}', \
                'DONE', 'closed', null, '$row->{'bugnr'}')");
+  } elsif ($bug_date !~ /^$row->{'date'}$/) {
+    # If it doesn't match with what we have in db, and it's not done change it.
+    $link->do("UPDATE translations SET date='$bug_date' WHERE id='$row->{'id'}'");
   }
 }
 

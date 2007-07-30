@@ -1,5 +1,9 @@
 2007-07-31  Guillem Jover  <guillem@debian.org>
 
+	* bin/l10n-closebugs: Add support for archived bug reports.
+
+2007-07-31  Guillem Jover  <guillem@debian.org>
+
 	* cgi-bin/l10n: Change from author to translator in the translator
 	view SQL query.
 
