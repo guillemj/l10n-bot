@@ -1,5 +1,9 @@
 2007-07-30  Guillem Jover  <guillem@debian.org>
 
+	* cgi-bin/l10n: Add utf-8 as the charset for the Content-Type.
+
+2007-07-30  Guillem Jover  <guillem@debian.org>
+
 	* bin/l10n-closebugs ($query_done): Remove unused variable.
 
 2007-07-30  Jordà Polo  <jorda@ettin.org>
