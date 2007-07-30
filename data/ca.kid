@@ -4,8 +4,8 @@
 
 <head>
   <title>Coordinació de la traducció Debian al català</title>
-  <link rel="stylesheet" type="text/css" href="/html/style.css"/>
-  <script src='/html/sorttable.js' type='text/javascript'></script>
+  <link rel="stylesheet" type="text/css" href="/style.css"/>
+  <script src='/sorttable.js' type='text/javascript'></script>
 </head>
 <body>
 
@@ -58,7 +58,7 @@ ${view['history']}</h2>
    <td>
      <a href="?history=${elem['name']}">${elem['name']}</a> 
      <a py:if="elem['file'] and elem['file'] != '0'"
-        href="/path/to/${elem['id']}.${elem['file']}">[${elem['file']}]</a>
+        href="/ca/${elem['id']}.${elem['file']}">[${elem['file']}]</a>
    </td>
    <td><a href="?translator=${elem['author']}">${elem['author']}</a></td>
    <td>${elem['date']}</td>
