@@ -88,7 +88,7 @@ while (my $row = $query->fetchrow_hashref()) {
   if (defined($entry)) {
     $bug_time = $entry->get_value('debbugsDate');
     $bug_state = $entry->get_value('debbugsState');
-  } else
+  } else {
     # If we don't get any entry from LDAP we assume it was closed some time
     # ago, at least 28 days, which is the time the BTS takes to archive.
     $bug_time = time() - 28 * 24 * 60 * 60;
