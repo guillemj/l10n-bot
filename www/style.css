@@ -139,21 +139,21 @@ table.sortable td a {
  * Status colours
  */
 
-table.sortable tr.itt {
+table.sortable tr.ITT {
 	/*background-color: #FFBE56;*/
 	background-color: #FFB454;
 }
 
-table.sortable tr.rfr, table.sortable tr.rfr2, table.sortable tr.lrfc {
+table.sortable tr.RFR, table.sortable tr.RFR2, table.sortable tr.LRFC {
 	/*background-color: #EF8E26;*/
 	background-color: #FFEB44;
 }
 
-table.sortable tr.bts {
+table.sortable tr.BTS {
 	background-color: #C7EA3C;
 }
 
-table.sortable tr.done {
+table.sortable tr.DONE {
 	background-color: #81C835;
 }
 

@@ -85,6 +85,6 @@ cursor.close()
 db.close()
 
 html = kid.Template(file=template, view=view, categories=categories)
-print 'Content-type: text/html\n\n'
-print html.serialize()
+print 'Content-type: text/html\n'
+print html.serialize(output='xhtml-strict')
 

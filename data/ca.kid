@@ -40,7 +40,7 @@ ${view['history']}</h2>
 
 <div py:for="cat in categories.keys()"><hr/>
 <h2 id="${cat}">${cat}</h2>
-<table class="sortable">
+<table class="sortable ${cat}">
  <thead>
   <tr>
    <th>Tipus</th>
