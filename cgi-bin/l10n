@@ -68,7 +68,7 @@ view = { 'default' : 'true' }
 # Translator view.
 if query.has_key('translator'):
 	translator = query['translator'].value
-	sql = '''SELECT * FROM translations WHERE author == ? GROUP BY name'''
+	sql = '''SELECT * FROM translations WHERE translator == ? GROUP BY name'''
 	params = (translator,)
 	view = { 'translator' : translator.decode('utf-8') }
 

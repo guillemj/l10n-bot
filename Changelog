@@ -1,3 +1,8 @@
+2007-07-31  Guillem Jover  <guillem@debian.org>
+
+	* cgi-bin/l10n: Change from author to translator in the translator
+	view SQL query.
+
 2007-07-30  Guillem Jover  <guillem@debian.org>
 
 	* cgi-bin/l10n: Add utf-8 as the charset for the Content-Type.
