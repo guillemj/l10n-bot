@@ -1,3 +1,7 @@
+2007-07-30  Guillem Jover  <guillem@debian.org>
+
+	* bin/l10n-closebugs ($query_done): Remove unused variable.
+
 2007-07-30  Jordà Polo  <jorda@ettin.org>
 
 	* cgi-bin/l10n: Do not print two new lines after Content-Type, and
