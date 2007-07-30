@@ -82,15 +82,18 @@ while (my $row = $query->fetchrow_hashref()) {
   my @entries = $result->entries;
   my $entry = $entries[0];
 
+  my $sql_time;
   my $bug_time;
   my $bug_state;
 
   if (defined($entry)) {
+    $sql_time = "'NOW'";
     $bug_time = $entry->get_value('debbugsDate');
     $bug_state = $entry->get_value('debbugsState');
   } else {
     # If we don't get any entry from LDAP we assume it was closed some time
     # ago, at least 28 days, which is the time the BTS takes to archive.
+    $sql_time = "'NOW', '-28 days'";
     $bug_time = time() - 28 * 24 * 60 * 60;
     $bug_state = 'done';
   }
@@ -107,7 +110,7 @@ while (my $row = $query->fetchrow_hashref()) {
     $link->do("UPDATE translations SET status='closed' \
                WHERE id='$row->{'id'}'");
     $link->do("INSERT INTO translations VALUES (null, '$row->{'name'}', \
-               '$row->{'translator'}', DATETIME('NOW'), '$row->{'category'}', \
+               '$row->{'translator'}', DATETIME($sql_time), '$row->{'category'}', \
                'DONE', 'closed', null, '$row->{'bugnr'}')");
   }
 }
