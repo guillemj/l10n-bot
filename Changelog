@@ -1,5 +1,9 @@
 2007-07-30  Guillem Jover  <guillem@debian.org>
 
+	* data/ca.kid: Fix self URL to point to the basedir instead of the cgi.
+
+2007-07-30  Guillem Jover  <guillem@debian.org>
+
 	* bin/l10n-closebugs: Switch from bugs.debian.org to
 	bts2ldap.debian.net for the LDAP server.
 

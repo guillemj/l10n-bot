@@ -10,8 +10,7 @@
 <body>
 
 <div id="header">
-  <h1><a href="l10n">Coordinació de la traducció de Debian al
-  català</a></h1>
+  <h1><a href="./">Coordinació de la traducció de Debian al català</a></h1>
 </div>
 
 <div id="main">
