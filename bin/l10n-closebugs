@@ -97,6 +97,11 @@ while (my $row = $query->fetchrow_hashref()) {
   my $bug_date = Date::Format::time2str("%Y-%m-%d %H\:%M\:%S", $bug_time);
   print " $bug_state\n" if $verbose;
 
+  # If it doesn't match with what we have in db, change it
+  if ($bug_date !~ /^$row->{'date'}$/) {
+    $link->do("UPDATE translations SET date='$bug_date' WHERE id='$row->{'id'}'");
+  }
+
   # If bug is done, create a new record in db to show this
   if ($bug_state =~ /^done$/) {
     $link->do("UPDATE translations SET status='closed' \
@@ -104,9 +109,6 @@ while (my $row = $query->fetchrow_hashref()) {
     $link->do("INSERT INTO translations VALUES (null, '$row->{'name'}', \
                '$row->{'translator'}', DATETIME('NOW'), '$row->{'category'}', \
                'DONE', 'closed', null, '$row->{'bugnr'}')");
-  } elsif ($bug_date !~ /^$row->{'date'}$/) {
-    # If it doesn't match with what we have in db, and it's not done change it.
-    $link->do("UPDATE translations SET date='$bug_date' WHERE id='$row->{'id'}'");
   }
 }
 
