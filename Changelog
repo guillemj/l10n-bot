@@ -1,3 +1,9 @@
+2007-07-31  Jordà Polo  <jorda@ettin.org>
+            Guillem Jover  <guillem@debian.org>
+
+	* bin/l10n-bot (%exts): Add 'diff' and 'patch' as valid extensions for
+	manual entries.
+
 2007-07-31  Guillem Jover  <guillem@debian.org>
 
 	* bin/l10n-closebugs: Add verbose output around SQL actions.

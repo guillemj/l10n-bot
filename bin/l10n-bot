@@ -80,7 +80,7 @@ sub get_entity_filenames {
        'debian-installer' => 'po',
        'po' => 'po',
        'man' => '(man|pod|[0-9])',
-       'manual' => '(sgml|xml|html|txt)',
+       'manual' => '(sgml|xml|html|diff|patch|txt)',
        'wml' => 'wml');
 
 if (! -d $tmpdir) {
