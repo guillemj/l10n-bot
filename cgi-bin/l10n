@@ -1,4 +1,4 @@
-#!/usr/bin/python2.4
+#!/usr/bin/python2.5
 # -*- coding: utf-8 -*-
 #
 # l10n -- frontend for the l10n-bot
@@ -22,9 +22,9 @@
 
 import cgi, datetime, kid
 # python2.4
-from pysqlite2 import dbapi2 as sqlite3
+#from pysqlite2 import dbapi2 as sqlite3
 # python2.5
-#import sqlite3
+import sqlite3
 
 team = 'ca'
 
