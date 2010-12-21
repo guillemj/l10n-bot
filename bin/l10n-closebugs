@@ -120,10 +120,14 @@ while (my $row = $query->fetchrow_hashref()) {
   }
 }
 
-print " -> finish\n" if $verbose;
+print " -> done\n" if $verbose;
 
 $query->finish();
 undef $query;
+print " -> query sql: finish\n" if $verbose;
 
 $link->disconnect();
+print " -> finish\n" if $verbose;
+
+1;
 
