@@ -1,4 +1,4 @@
-#!/usr/bin/perl -w
+#!/usr/bin/perl
 #
 # l10n-bot -- Parse emails on stdin for psuedo-urls used on debian-l10n-*@
 #
@@ -28,6 +28,8 @@
 #  with [(RFR|LCFC)] the last file that has an appropriate filename extension
 #  will be saved to disk.
 #  See also pseudo-urls.html
+
+use warnings;
 
 use Text::Iconv;
 use MIME::Parser;

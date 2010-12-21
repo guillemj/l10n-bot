@@ -1,4 +1,4 @@
-#!/usr/bin/perl -w
+#!/usr/bin/perl
 #
 # l10n-closebugs -- Query debian BTS if bugs marked as open are closed.
 #
@@ -27,6 +27,8 @@
 #
 
 use strict;
+use warnings;
+
 use DBI;
 use Net::LDAP;
 use Date::Parse;
