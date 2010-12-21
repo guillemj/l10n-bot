@@ -1,8 +1,9 @@
 The bot needs the following packages:
 
+libdbd-sqlite3-perl
 libnet-ldap-perl
-libmime-perl
+libmime-tools-perl
 libtext-iconv-perl
-php4-mysql
-mysql-server
 
+python-kid
+python-pysqlite2
