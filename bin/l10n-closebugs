@@ -84,6 +84,7 @@ while (my $row = $query->fetchrow_hashref()) {
   my $sql_time;
   my $bug_entry = $bugs->{$row->{'bugnr'}};
   my $bug_time;
+  my $bug_done;
   my $bug_state;
 
   print "$row->{'bugnr'} $row->{'name'} $row->{'category'}\n" if $verbose;
@@ -91,6 +92,7 @@ while (my $row = $query->fetchrow_hashref()) {
   if ($bug_entry) {
     $sql_time = "'NOW'";
     $bug_time = $bug_entry->{date};
+    $bug_done = $bug_entry->{done};
     $bug_state = $bug_entry->{pending};
   } else {
     # If we don't get any entry from SOAP we assume this was an invalid bug
@@ -99,10 +101,12 @@ while (my $row = $query->fetchrow_hashref()) {
     print " bug unknown; closing\n" if $verbose;
     $sql_time = "'NOW', '-28 days'";
     $bug_time = time() - 28 * 24 * 60 * 60;
+    $bug_done = 1;
     $bug_state = 'done';
   }
   my $bug_date = Date::Format::time2str("%Y-%m-%d %H\:%M\:%S", $bug_time);
-  print " $bug_state\n" if $verbose;
+
+  print " bug state '$bug_state'; done? '$bug_done'\n" if $verbose;
 
   # If it doesn't match with what we have in db, change it
   if ($bug_date !~ /^$row->{'date'}$/) {
@@ -111,7 +115,7 @@ while (my $row = $query->fetchrow_hashref()) {
   }
 
   # If bug is done, create a new record in db to show this
-  if ($bug_state =~ /^done$/) {
+  if ($bug_done) {
     print " marking as closed\n" if $verbose;
     $link->do("UPDATE translations SET status='closed' \
                WHERE id='$row->{'id'}'");
