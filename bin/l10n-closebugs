@@ -3,7 +3,7 @@
 # l10n-closebugs -- Query debian BTS if bugs marked as open are closed.
 #
 # Copyright © 2003-2004 Tim Dijkstra
-# Copyright © 2004-2005, 2007-2008 Guillem Jover
+# Copyright © 2004-2005, 2007-2008, 2010-2011 Guillem Jover
 # Copyright © 2007 Jordà Polo
 #
 # This program is free software; you can redistribute it and/or modify
@@ -30,28 +30,24 @@ use strict;
 use warnings;
 
 use DBI;
-use Net::LDAP;
+use SOAP::Lite;
 use Date::Parse;
 use Date::Format;
 
 my $team = "ca";
 
-my $bts_host = "bts2ldap.debian.net";
-my $bts_port = 10101;
-my $bts_dn = "dc=current,dc=bugs,dc=debian,dc=org";
+my $bts_uri = "http://bugs.debian.org/cgi-bin/soap.cgi";
 
 my $basedir = "/srv/$team.debian.net";
 my $db_file = $basedir . "/data/$team.db";
 
 my $verbose = 0;
 
-# Setup LDAP
+# Setup SOAP
 
-print " -> setup ldap\n" if $verbose;
-my $ldap = Net::LDAP->new($bts_host,
-			  'port' => "$bts_port",
-			  'onerror' => 'die') or die "ldap init";
-$ldap->bind("", 'version' => 3, 'noauth' => 1) or die "ldap bind";
+print " -> setup soap\n" if $verbose;
+my $soap = SOAP::Lite->uri('Debbugs/SOAP')->proxy($bts_uri) or
+	die "soap init: $@";
 
 # Setup SQL
 
@@ -70,31 +66,37 @@ my $query = $link->prepare("\
 print " -> query sql: execute\n" if $verbose;
 $query->execute();
 
+print " -> query soap: loop\n" if $verbose;
+my @bug_list;
+while (my $row = $query->fetchrow_hashref()) {
+  print " adding id $row->{'bugnr'} to the soap query\n" if $verbose;
+  push @bug_list, $row->{'bugnr'};
+}
+
+print " -> query soap: execute\n" if $verbose;
+my $bugs = $soap->get_status(@bug_list)->result;
+
+print " -> query sql: execute\n" if $verbose;
+$query->execute();
+
 print " -> query sql: loop\n" if $verbose;
 while (my $row = $query->fetchrow_hashref()) {
-  print "$row->{'bugnr'} $row->{'name'} $row->{'category'}\n" if $verbose;
-
-  # Get BR from bts2ldap
-
-  my $result = $ldap->search(base => "$bts_dn",
-			     filter => "(debbugsID=$row->{'bugnr'})",
-			     attrs => ['debbugsState', 'debbugsDate']) or
-	       die "ldap search";
-
-  my @entries = $result->entries;
-  my $entry = $entries[0];
-
   my $sql_time;
+  my $bug_entry = $bugs->{$row->{'bugnr'}};
   my $bug_time;
   my $bug_state;
 
-  if (defined($entry)) {
+  print "$row->{'bugnr'} $row->{'name'} $row->{'category'}\n" if $verbose;
+
+  if ($bug_entry) {
     $sql_time = "'NOW'";
-    $bug_time = $entry->get_value('debbugsDate');
-    $bug_state = $entry->get_value('debbugsState');
+    $bug_time = $bug_entry->{date};
+    $bug_state = $bug_entry->{pending};
   } else {
-    # If we don't get any entry from LDAP we assume it was closed some time
-    # ago, at least 28 days, which is the time the BTS takes to archive.
+    # If we don't get any entry from SOAP we assume this was an invalid bug
+    # report, so we mark it as closed and set its time to before the archival
+    # data, to not clutter the output reports.
+    print " bug unknown; closing\n" if $verbose;
     $sql_time = "'NOW', '-28 days'";
     $bug_time = time() - 28 * 24 * 60 * 60;
     $bug_state = 'done';

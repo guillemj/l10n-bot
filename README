@@ -1,7 +1,7 @@
 The bot needs the following packages:
 
 libdbd-sqlite3-perl
-libnet-ldap-perl
+libsoap-lite-perl
 libmime-tools-perl
 libtext-iconv-perl
 
