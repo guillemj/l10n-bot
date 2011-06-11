@@ -23,7 +23,7 @@
 # FUNCTION:
 #  This program will parse emails on stdin for psuedo-urls in the subject used
 #  on debian-l10n-*@l.d.o for coordination, If the subject starts with
-#  [(ITT|RFR|RFR2|LCFC|BTS|CLOSE)] it is further processed. This means that
+#  [(ITT|RFR|RFR2|LCFC|BTS|DONE)] it is further processed. This means that
 #  info found in this url is put in an SQLite database. In case where it starts
 #  with [(RFR|LCFC)] the last file that has an appropriate filename extension
 #  will be saved to disk.
@@ -77,7 +77,7 @@ sub get_entity_filenames {
   return @files;
 }
 
-#@stati=(ITT,RFR,RFR2,LCFC,SUBMIT,CLOSE);
+#@stati=(ITT,RFR,RFR2,LCFC,BTS#NNN,DONE);
 # Define which filename is appropriate for wich type of translation
 %exts=('po-debconf' => 'po',
        'debian-installer' => 'po',
@@ -117,7 +117,7 @@ my $wd = new MIME::WordDecoder;
 $wd->handler('UTF-8' => "KEEP", 'US-ASCII' => "KEEP", 'raw' => "KEEP",
 	     '*' => \&cvt_utf8);
 
-# Cut out e-mail adres, trim name
+# Cut out e-mail address, trim name
 $translator = $wd->decode($head->get('From'));
 $translator =~ s/\s<[^>]*>\s//;
 $translator =~ s/^\s*([^\s]*)\s*$/$1/;
