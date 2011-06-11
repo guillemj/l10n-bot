@@ -82,12 +82,13 @@ $query->execute();
 print " -> query sql: loop\n" if $verbose;
 while (my $row = $query->fetchrow_hashref()) {
   my $sql_time;
-  my $bug_entry = $bugs->{$row->{'bugnr'}};
+  my $bug_id = $row->{'bugnr'};
+  my $bug_entry = $bugs->{$bug_id};
   my $bug_time;
   my $bug_done;
   my $bug_state;
 
-  print "$row->{'bugnr'} $row->{'name'} $row->{'category'}\n" if $verbose;
+  print "$bug_id $row->{'name'} $row->{'category'}\n" if $verbose;
 
   if ($bug_entry) {
     $sql_time = "'NOW'";
@@ -122,7 +123,7 @@ while (my $row = $query->fetchrow_hashref()) {
     print " adding done entry\n" if $verbose;
     $link->do("INSERT INTO translations VALUES (null, '$row->{'name'}', \
                '$row->{'translator'}', DATETIME($sql_time), '$row->{'category'}', \
-               'DONE', 'closed', null, '$row->{'bugnr'}')");
+               'DONE', 'closed', null, '$bug_id')");
   }
 }
 
