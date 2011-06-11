@@ -12,4 +12,3 @@ CREATE TABLE translations (
   'bugnr'      INTEGER UNSIGNED default NULL,
   PRIMARY KEY ('id')
 );
-

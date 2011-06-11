@@ -186,4 +186,3 @@ $parser->filer->purge();
 rmdir $tmpdir;
 
 1;
-
