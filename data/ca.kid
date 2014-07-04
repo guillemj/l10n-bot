@@ -70,6 +70,10 @@ ${view['history']}</h2>
 </div>
 
 <div id="footer">
+ <p>
+  <a href="http://git.hadrons.org/?p=debian/l10n-bot.git">Browse source code</a> or
+  <a href="git://git.hadrons.org/git/debian/l10n-bot.git">clone source code</a>.
+ </p>
 </div>
 
 </body>
