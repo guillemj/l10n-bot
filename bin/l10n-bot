@@ -151,12 +151,15 @@ if (($status =~ /(RFR|RFR2|LCFC)/) and ($entity->parts() > 0)) {
 
    for $path (@filenames) {
        # Decompress
-       if ($path =~ /.gz$/) {
-          system("gunzip", "$path");
-          $path =~ s/.gz$//;
-       } elsif ($path =~ /.bz2$/) {
-          system("bunzip2", "$path");
-          $path =~ s/.bz2$//;
+       if ($path =~ /\.gz$/) {
+          system 'gunzip', $path;
+          $path =~ s/\.gz$//;
+       } elsif ($path =~ /\.xz$/) {
+          system 'unxz', $path;
+          $path =~ s/\.xz$//;
+       } elsif ($path =~ /\.bz2$/) {
+          system 'bunzip2', $path;
+          $path =~ s/\.bz2$//;
        }
 
        if ($path =~ /\.($exts{$type})$/) {
