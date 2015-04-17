@@ -1,9 +1,9 @@
-#!/usr/bin/python
-# -*- coding: utf-8 -*-
+#!/usr/bin/perl
 #
 # l10n -- frontend for the l10n-bot
 #
 # Copyright © 2007 Jordà Polo
+# Copyright © 2015 Guillem Jover <guillem@hadrons.org>
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -16,74 +16,98 @@
 # GNU General Public License for more details.
 #
 # You should have received a copy of the GNU General Public License
-# along with this program; if not, write to the Free Software
-# Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
-#
+# along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-import cgi, datetime, kid
-# python2.4
-#from pysqlite2 import dbapi2 as sqlite3
-# python2.5, python2.6
-import sqlite3
+use strict;
+use warnings;
 
-team = 'ca'
+use Time::Seconds;
+use Time::Piece;
+use Encode qw(encode);
+use CGI::Simple qw(-croak -utf8);
+use DBI;
+use Petal;
 
-basedir = '/srv/%s.debian.net' % team
-database = '%s/data/%s.db' % (basedir, team)
-template = '%s/data/%s.kid' % (basedir, team)
+my $team = 'ca';
 
-query = cgi.FieldStorage()
+my $basedir = "/srv/$team.debian.net";
+my $datadir = "$basedir/data";
+my $database = "$team.db";
+my $template = "$team.tal";
 
-db = sqlite3.connect(database)
-cursor = db.cursor()
+# Harden the CGI (the CGI::Simple defaults are pretty safe already).
+$CGI::Simple::POST_MAX = 1024 * 10;
+$CGI::Simple::DISABLE_UPLOADS = 1;
 
-def fetch_categories(sql, params):
-	cursor.execute(sql, params)
-	categories = {}
-	for row in cursor:
-		translation = {
-			'id'       : row[0],
-			'name'     : row[1],
-			'author'   : row[2],
-			'date'     : row[3],
-			'category' : row[4],
-			'type'     : row[5],
-			'file'     : row[7],
-			'bugnum'   : row[8],
-		}
-		cat = row[4]
-		if cat not in categories:
-			categories[cat] = []
-		categories[cat].append(translation)
-	return categories
+my $cgi = CGI::Simple->new;
+$cgi->charset('UTF-8');
+
+my $db = DBI->connect("DBI:SQLite:dbname=$datadir/$database");
+
+sub fetch_categories {
+    my ($query, @params) = @_;
+
+    $query->execute(@params);
+
+    my $categories;
+    while (my $translation = $query->fetchrow_hashref()) {
+        my $cat = $translation->{category};
+        if ($translation->{type} eq 'BTS') {
+            $translation->{type_is_bts} = 1;
+        }
+        if (not exists $categories->{$cat}) {
+            $categories->{$cat} = {
+                name => $cat,
+                list => [],
+            };
+        }
+        push @{$categories->{$cat}->{list}}, $translation;
+    }
+    return [ sort { $a->{name} cmp $b->{name} } values %{$categories} ];
+}
 
 # Default view.
-sql = '''SELECT * FROM translations WHERE
-         (type != "DONE" AND status == "open") OR
-         (type == "DONE" AND date > ?)'''
-expire = datetime.datetime.now() + datetime.timedelta(days=-7)
-params = (expire.strftime("%Y-%m-%d %H:%M:%S"),)
-view = { 'default' : 'true' }
+my $sql = 'SELECT * FROM translations
+           WHERE (type != "DONE" AND status = "open") OR
+                 (type == "DONE" AND date > ?)';
+my $expire = localtime;
+$expire -= ONE_WEEK;
+my @params = ($expire->strftime('%Y-%m-%d %H:%M:%S'));
+my $view = { default => 1 };
 
 # Translator view.
-if query.has_key('translator'):
-	translator = query['translator'].value
-	sql = '''SELECT * FROM translations WHERE translator == ? GROUP BY name'''
-	params = (translator,)
-	view = { 'translator' : translator.decode('utf-8') }
+if ($cgi->param('translator')) {
+    $sql = 'SELECT * FROM translations WHERE translator = ? GROUP BY name';
+    my $translator = $cgi->param('translator');
+    @params = ($translator);
+    $view = { translator => $translator };
+}
 
 # History view.
-if query.has_key('history'):
-	history = query['history'].value
-	sql = '''SELECT * FROM translations WHERE name == ?'''
-	params = (history,)
-	view = { 'history' : history.decode('utf-8') }
+if ($cgi->param('history')) {
+    $sql = 'SELECT * FROM translations WHERE name = ?';
+    my $history = $cgi->param('history');
+    @params = ($history);
+    $view = { history => $history };
+}
 
-categories = fetch_categories(sql, params)
+my $query = $db->prepare($sql);
+my $categories = fetch_categories($query, @params);
 
-cursor.close()
-db.close()
+$db->disconnect();
 
-html = kid.Template(file=template, view=view, categories=categories)
-print 'Content-type: text/html; charset=utf-8\n'
-print html.serialize(output='xhtml-strict')
+my $html = Petal->new(base_dir => $datadir, file => $template,
+                      disk_cache => 0, memory_cache => 0,
+                      input => 'XML', output => 'XHTML');
+
+print $cgi->header(
+    -type => 'text/html',
+    -charset => 'UTF-8',
+);
+
+print encode('UTF-8', $html->process(
+    view => $view,
+    categories => $categories,
+));
+
+1;

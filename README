@@ -1,9 +1,9 @@
 The bot needs the following packages:
 
+libtimedate-perl
 libdbd-sqlite3-perl
 libsoap-lite-perl
 libmime-tools-perl
 libtext-iconv-perl
-
-python-kid
-python-pysqlite2
+libcgi-simple-perl
+libpetal-perl
