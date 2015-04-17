@@ -39,9 +39,9 @@ use MIME::WordDecoder;
 use File::Copy;
 use DBI;
 
-my $team = "ca";
+my $team = 'ca';
 
-my $basedir = "/srv/ca.debian.net";
+my $basedir = '/srv/ca.debian.net';
 my $tmpdir = "$basedir/tmp/$$";
 my $dir = "$basedir/www";
 
@@ -52,10 +52,10 @@ sub cvt_utf8
   my ($data, $charset, $decoder) = @_ ;
 
   if ($data) {
-    my $converter = Text::Iconv->new($charset, "UTF-8");
+    my $converter = Text::Iconv->new($charset, 'UTF-8');
     return $converter->convert($data);
   } else {
-    return "";
+    return '';
   }
 }
 
@@ -113,11 +113,11 @@ if (!($subject =~ /^\[(ITT|RFR|RFR2|LCFC|BTS#\d+|DONE)\]\s*(po-debconf|debian-in
 $status = $1;
 $type = $2;
 $name = $3;
-$date = Date::Format::time2str "%Y-%m-%d %H:%M:%S", Date::Parse::str2time($head->get('Date'));
+$date = Date::Format::time2str '%Y-%m-%d %H:%M:%S', Date::Parse::str2time($head->get('Date'));
 
 # Create a word quoted-printable converter
 my $wd = MIME::WordDecoder->new;
-$wd->handler('UTF-8' => "KEEP", 'US-ASCII' => "KEEP", 'raw' => "KEEP",
+$wd->handler('UTF-8' => 'KEEP', 'US-ASCII' => 'KEEP', 'raw' => 'KEEP',
 	     '*' => \&cvt_utf8);
 
 # Cut out e-mail address, trim name
