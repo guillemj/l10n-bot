@@ -50,35 +50,36 @@ my $db_file = $basedir . "/data/$team.db";
 
 sub cvt_utf8
 {
-  my ($data, $charset, $decoder) = @_ ;
+    my ($data, $charset, $decoder) = @_ ;
 
-  if ($data) {
-    my $converter = Text::Iconv->new($charset, 'UTF-8');
-    return $converter->convert($data);
-  } else {
-    return '';
-  }
+    if ($data) {
+      my $converter = Text::Iconv->new($charset, 'UTF-8');
+      return $converter->convert($data);
+    } else {
+      return '';
+    }
 }
 
 # Recursive routine for finding the entity filenames.
-sub get_entity_filenames {
-  my ($entity) = @_;
-  my @files;
-  my @parts = $entity->parts;
+sub get_entity_filenames
+{
+    my ($entity) = @_;
+    my @files;
+    my @parts = $entity->parts;
 
-  if (@parts) {                     # multipart...
-    foreach my $part (@parts) {
-      push @files, get_entity_filenames($part);
+    if (@parts) {                     # multipart...
+        foreach my $part (@parts) {
+            push @files, get_entity_filenames($part);
+        }
+    } else {                          # single part...
+        if ($entity->bodyhandle) {
+            return ($entity->bodyhandle->path);
+        } else {
+            return ();
+        }
     }
-  } else {                          # single part...
-    if ($entity->bodyhandle) {
-      return ($entity->bodyhandle->path);
-    } else {
-      return ();
-    }
-  }
 
-  return @files;
+    return @files;
 }
 
 #@stati=(ITT,RFR,RFR2,LCFC,BTS#NNN,DONE);
@@ -93,7 +94,7 @@ my %exts = (
 );
 
 if (! -d $tmpdir) {
-  mkdir $tmpdir;
+    mkdir $tmpdir;
 }
 
 ### Create parser, and set some parsing options:
@@ -119,8 +120,12 @@ my $date = Date::Format::time2str('%Y-%m-%d %H:%M:%S',
 
 # Create a word quoted-printable converter
 my $wd = MIME::WordDecoder->new;
-$wd->handler('UTF-8' => 'KEEP', 'US-ASCII' => 'KEEP', 'raw' => 'KEEP',
-	     '*' => \&cvt_utf8);
+$wd->handler(
+    'UTF-8' => 'KEEP',
+    'US-ASCII' => 'KEEP',
+    'raw' => 'KEEP',
+    '*' => \&cvt_utf8,
+);
 
 # Cut out e-mail address, trim name
 my $translator = $wd->decode($head->get('From'));
@@ -165,8 +170,8 @@ if (($status =~ /(RFR|RFR2|LCFC)/) and ($entity->parts() > 0)) {
        }
 
        if ($path =~ /\.($exts{$type})$/) {
-	  $tmpfile = $path;
-	  $ext = $1;
+           $tmpfile = $path;
+           $ext = $1;
        }
    }
 }
@@ -182,7 +187,7 @@ for my $tmpname (split(/,/, $name)) {
     my $insertid = $link->last_insert_id(undef, undef, undef, undef);
     if ($tmpfile) {
         my $newfile = "$dir/$team/$insertid.$ext";
-	copy($tmpfile, $newfile);
+        copy($tmpfile, $newfile);
     }
 }
 
