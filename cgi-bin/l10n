@@ -24,7 +24,7 @@ use warnings;
 use Time::Seconds;
 use Time::Piece;
 use Encode qw(encode);
-use CGI::Simple qw(-croak -utf8);
+use CGI::Simple qw(-croak);
 use DBI;
 use Petal;
 
