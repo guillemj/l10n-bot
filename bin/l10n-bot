@@ -3,7 +3,7 @@
 # l10n-bot -- Parse emails on stdin for psuedo-urls used on debian-l10n-*@
 #
 # Copyright © 2003-2004 Tim Dijkstra
-# Copyrigth © 2004 Guillem Jover
+# Copyrigth © 2004-2005, 2008, 2010-2011, 2015 Guillem Jover
 # Copyright © 2007 Jordà Polo
 #
 # This program is free software; you can redistribute it and/or modify
