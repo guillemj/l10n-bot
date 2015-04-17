@@ -29,6 +29,7 @@
 #  will be saved to disk.
 #  See also pseudo-urls.html
 
+use strict;
 use warnings;
 
 use Date::Format;
@@ -66,7 +67,7 @@ sub get_entity_filenames {
   my @parts = $entity->parts;
 
   if (@parts) {                     # multipart...
-    foreach $part (@parts) {
+    foreach my $part (@parts) {
       push @files, get_entity_filenames($part);
     }
   } else {                          # single part...
@@ -82,12 +83,14 @@ sub get_entity_filenames {
 
 #@stati=(ITT,RFR,RFR2,LCFC,BTS#NNN,DONE);
 # Define which filename is appropriate for wich type of translation
-%exts=('po-debconf' => 'po',
-       'debian-installer' => 'po',
-       'po' => 'po',
-       'man' => '(man|pod|[0-9])',
-       'manual' => '(sgml|xml|html|diff|patch|txt)',
-       'wml' => 'wml');
+my %exts = (
+    'po-debconf' => 'po',
+    'debian-installer' => 'po',
+    'po' => 'po',
+    'man' => '(man|pod|[0-9])',
+    'manual' => '(sgml|xml|html|diff|patch|txt)',
+    'wml' => 'wml',
+);
 
 if (! -d $tmpdir) {
   mkdir $tmpdir;
@@ -98,10 +101,10 @@ my $parser = MIME::Parser->new;
 $parser->output_dir($tmpdir);
 
 ### Parse input:
-$entity = $parser->parse(\*STDIN) or die "parse failed\n";
-$head = $entity->head;
+my $entity = $parser->parse(\*STDIN) or die "parse failed\n";
+my $head = $entity->head;
 
-$subject = $head->get('Subject');
+my $subject = $head->get('Subject');
 $subject =~ s/\n\s*//g;
 
 if (!($subject =~ /^\[(ITT|RFR|RFR2|LCFC|BTS#\d+|DONE)\]\s*(po-debconf|debian-installer|po|man|manual|wml):\/\/([^\s]*)/)) {
@@ -110,10 +113,9 @@ if (!($subject =~ /^\[(ITT|RFR|RFR2|LCFC|BTS#\d+|DONE)\]\s*(po-debconf|debian-in
     exit;
 }
 
-$status = $1;
-$type = $2;
-$name = $3;
-$date = Date::Format::time2str '%Y-%m-%d %H:%M:%S', Date::Parse::str2time($head->get('Date'));
+my ($status, $type, $name) = ($1, $2, $3);
+my $date = Date::Format::time2str('%Y-%m-%d %H:%M:%S',
+                                  Date::Parse::str2time($head->get('Date')));
 
 # Create a word quoted-printable converter
 my $wd = MIME::WordDecoder->new;
@@ -121,7 +123,7 @@ $wd->handler('UTF-8' => 'KEEP', 'US-ASCII' => 'KEEP', 'raw' => 'KEEP',
 	     '*' => \&cvt_utf8);
 
 # Cut out e-mail address, trim name
-$translator = $wd->decode($head->get('From'));
+my $translator = $wd->decode($head->get('From'));
 $translator =~ s/\s<[^>]*>\s//;
 $translator =~ s/^\s*([^\s]*)\s*$/$1/;
 
@@ -149,7 +151,7 @@ if ($status eq 'ITT') {
 if (($status =~ /(RFR|RFR2|LCFC)/) and ($entity->parts() > 0)) {
    my @filenames = get_entity_filenames($entity);
 
-   for $path (@filenames) {
+   for my $path (@filenames) {
        # Decompress
        if ($path =~ /\.gz$/) {
           system 'gunzip', $path;
@@ -169,18 +171,17 @@ if (($status =~ /(RFR|RFR2|LCFC)/) and ($entity->parts() > 0)) {
    }
 }
 
-$dsn = "DBI:SQLite:dbname=$db_file";
-$link = DBI->connect($dsn);
+my $link = DBI->connect("DBI:SQLite:dbname=$db_file");
 
-for $tmpname (split(',',$name)){
+for my $tmpname (split(/,/, $name)) {
     $link->do("UPDATE translations SET status = 'closed' \
                WHERE name == '$tmpname'");
     $link->do("INSERT INTO translations VALUES (null, '$tmpname', \
                '$translator', '$date', '$type', '$status', 'open', '$ext', \
                '$bugnr')");
-    $insertid = $link->last_insert_id(undef, undef, undef, undef);
+    my $insertid = $link->last_insert_id(undef, undef, undef, undef);
     if ($tmpfile) {
-	$newfile = "$dir/$team/$insertid.$ext";
+        my $newfile = "$dir/$team/$insertid.$ext";
 	copy($tmpfile, $newfile);
     }
 }
