@@ -176,15 +176,15 @@ if (($status =~ /(RFR|RFR2|LCFC)/) and ($entity->parts() > 0)) {
    }
 }
 
-my $link = DBI->connect("DBI:SQLite:dbname=$db_file");
+my $db = DBI->connect("DBI:SQLite:dbname=$db_file");
 
 for my $tmpname (split(/,/, $name)) {
-    $link->do("UPDATE translations SET status = 'closed' \
-               WHERE name == '$tmpname'");
-    $link->do("INSERT INTO translations VALUES (null, '$tmpname', \
-               '$translator', '$date', '$type', '$status', 'open', '$ext', \
-               '$bugnr')");
-    my $insertid = $link->last_insert_id(undef, undef, undef, undef);
+    $db->do("UPDATE translations SET status = 'closed' \
+             WHERE name == '$tmpname'");
+    $db->do("INSERT INTO translations VALUES (null, '$tmpname', \
+             '$translator', '$date', '$type', '$status', 'open', '$ext', \
+             '$bugnr')");
+    my $insertid = $db->last_insert_id(undef, undef, undef, undef);
     if ($tmpfile) {
         my $newfile = "$dir/$team/$insertid.$ext";
         copy($tmpfile, $newfile);
@@ -193,7 +193,7 @@ for my $tmpname (split(/,/, $name)) {
 
 # Clean
 
-$link->disconnect();
+$db->disconnect();
 $parser->filer->purge();
 rmdir $tmpdir;
 
