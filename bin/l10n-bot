@@ -31,9 +31,12 @@
 
 use warnings;
 
+use Date::Format;
+use Date::Parse;
 use Text::Iconv;
 use MIME::Parser;
 use MIME::WordDecoder;
+use File::Copy;
 use DBI;
 
 my $team = "ca";
@@ -173,7 +176,6 @@ for $tmpname (split(',',$name)){
                '$bugnr')");
     $insertid = $link->last_insert_id(undef, undef, undef, undef);
     if ($tmpfile) {
-	use File::Copy;
 	$newfile = "$dir/$team/$insertid.$ext";
 	copy($tmpfile, $newfile);
     }
