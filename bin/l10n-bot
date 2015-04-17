@@ -94,7 +94,7 @@ if (! -d $tmpdir) {
 }
 
 ### Create parser, and set some parsing options:
-my $parser = new MIME::Parser;
+my $parser = MIME::Parser->new;
 $parser->output_dir($tmpdir);
 
 ### Parse input:
@@ -116,7 +116,7 @@ $name = $3;
 $date = Date::Format::time2str "%Y-%m-%d %H:%M:%S", Date::Parse::str2time($head->get('Date'));
 
 # Create a word quoted-printable converter
-my $wd = new MIME::WordDecoder;
+my $wd = MIME::WordDecoder->new;
 $wd->handler('UTF-8' => "KEEP", 'US-ASCII' => "KEEP", 'raw' => "KEEP",
 	     '*' => \&cvt_utf8);
 
