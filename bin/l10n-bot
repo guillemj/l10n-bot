@@ -130,15 +130,19 @@ my $bugnr = 0;
 my $ext = 0;
 
 # Extract bugnr, chop it of
-if ($status =~ /BTS/) {
-    $status =~ /^(BTS)#(\d+)$/;
+if ($status =~ /^(BTS)#(\d+)$/) {
     $status = $1;
     $bugnr = $2;
 }
 
 # In case of po-debconf, it can only be one per package, chop of filename
-if ($type =~ /^po-debconf$/) {
+if ($type eq 'po-debconf') {
     $name =~ s/^(.*)\/[^\/]*$/$1/;
+}
+
+# If we have an ITT, we can have multiple packagename {php4,apache,mysql}
+if ($status eq 'ITT') {
+    $name =~ s/{([^}]*)}/$1/;
 }
 
 # Get filename
@@ -164,9 +168,6 @@ if (($status =~ /(RFR|RFR2|LCFC)/) and ($entity->parts() > 0)) {
 
 $dsn = "DBI:SQLite:dbname=$db_file";
 $link = DBI->connect($dsn);
-
-# If we have an ITT, we can have multiple packagename {php4,apache,mysql}
-($status =~ /^ITT$/) and ($name =~ s/{([^}]*)}/$1/);
 
 for $tmpname (split(',',$name)){
     $link->do("UPDATE translations SET status = 'closed' \
