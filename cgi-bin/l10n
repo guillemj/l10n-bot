@@ -50,10 +50,11 @@ sub fetch_categories {
     $query->execute(@params);
 
     my $categories;
-    while (my $translation = $query->fetchrow_hashref()) {
-        my $cat = $translation->{category};
-        if ($translation->{type} eq 'BTS') {
-            $translation->{type_is_bts} = 1;
+    while (my $trans = $query->fetchrow_hashref()) {
+        my $cat = $trans->{category};
+
+        if ($trans->{type} eq 'BTS') {
+            $trans->{type_is_bts} = 1;
         }
         if (not exists $categories->{$cat}) {
             $categories->{$cat} = {
@@ -61,7 +62,7 @@ sub fetch_categories {
                 list => [],
             };
         }
-        push @{$categories->{$cat}->{list}}, $translation;
+        push @{$categories->{$cat}->{list}}, $trans;
     }
     return [ sort { $a->{name} cmp $b->{name} } values %{$categories} ];
 }
