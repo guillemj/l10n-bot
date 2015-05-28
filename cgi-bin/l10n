@@ -23,7 +23,7 @@ use warnings;
 
 use Time::Seconds;
 use Time::Piece;
-use Encode qw(encode);
+use Encode qw(decode encode);
 use CGI::Simple qw(-croak);
 use DBI;
 use Petal;
@@ -53,6 +53,7 @@ sub fetch_categories {
     while (my $trans = $query->fetchrow_hashref()) {
         my $cat = $trans->{category};
 
+        $trans->{translator} = decode('UTF-8', $trans->{translator});
         if ($trans->{type} eq 'BTS') {
             $trans->{type_is_bts} = 1;
         }
@@ -99,6 +100,7 @@ $db->disconnect();
 
 my $html = Petal->new(base_dir => $datadir, file => $template,
                       disk_cache => 0, memory_cache => 0,
+                      decode_charset => 'UTF-8',
                       input => 'XML', output => 'XHTML');
 
 print $cgi->header(
