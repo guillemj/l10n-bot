@@ -27,13 +27,18 @@ use Encode qw(decode encode);
 use CGI::Simple qw(-croak);
 use DBI;
 use Petal;
+use Petal::Cache::Disk;
 
 my $team = 'ca';
 
 my $basedir = "/srv/$team.debian.net";
+my $tempdir = "$basedir/cache";
 my $datadir = "$basedir/data";
 my $database = "$team.db";
 my $template = "$team.tal";
+
+# Set a local cache directory.
+$Petal::Cache::Disk::TMP_DIR = $tempdir;
 
 # Harden the CGI (the CGI::Simple defaults are pretty safe already).
 $CGI::Simple::POST_MAX = 1024 * 10;
@@ -99,7 +104,7 @@ my $categories = fetch_categories($query, @params);
 $db->disconnect();
 
 my $html = Petal->new(base_dir => $datadir, file => $template,
-                      disk_cache => 0, memory_cache => 0,
+                      disk_cache => 1, memory_cache => 0,
                       decode_charset => 'UTF-8',
                       input => 'XML', output => 'XHTML');
 
