@@ -38,12 +38,13 @@ use Text::Iconv;
 use MIME::Parser;
 use MIME::WordDecoder;
 use File::Copy;
+use File::Temp qw(tempdir);
 use DBI;
 
 my $team = 'ca';
 
 my $basedir = '/srv/ca.debian.net';
-my $tmpdir = "$basedir/tmp/$$";
+my $tmpdir = "$basedir/tmp";
 my $webdir = "$basedir/www";
 
 my $db_file = $basedir . "/data/$team.db";
@@ -93,13 +94,11 @@ my %exts = (
     'wml' => 'wml',
 );
 
-if (! -d $tmpdir) {
-    mkdir $tmpdir;
-}
+my $mimedir = tempdir('l10n-bot.XXXXXX', CLEANUP => 1, DIR => $tmpdir);
 
 ### Create parser, and set some parsing options:
 my $parser = MIME::Parser->new;
-$parser->output_dir($tmpdir);
+$parser->output_dir($mimedir);
 
 ### Parse input:
 my $entity = $parser->parse(\*STDIN) or die "parse failed\n";
@@ -110,7 +109,6 @@ $subject =~ s/\n\s*//g;
 
 if (!($subject =~ /^\[(ITT|RFR|RFR2|LCFC|BTS#\d+|DONE)\]\s*(po-debconf|debian-installer|po|man|manual|wml):\/\/([^\s]*)/)) {
     $parser->filer->purge();
-    rmdir $tmpdir;
     exit;
 }
 
@@ -194,6 +192,5 @@ for my $tmpname (split(/,/, $name)) {
 
 $db->disconnect();
 $parser->filer->purge();
-rmdir $tmpdir;
 
 1;
