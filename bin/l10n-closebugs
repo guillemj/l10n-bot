@@ -81,7 +81,6 @@ $query->execute();
 
 print " -> query sql: loop\n" if $verbose;
 while (my $row = $query->fetchrow_hashref()) {
-  my $sql_time;
   my $bug_id = $row->{'bugnr'};
   my $bug_entry = $bugs->{$bug_id};
   my $bug_time;
@@ -91,7 +90,6 @@ while (my $row = $query->fetchrow_hashref()) {
   print "$bug_id $row->{'name'} $row->{'category'}\n" if $verbose;
 
   if ($bug_entry) {
-    $sql_time = "'NOW'";
     $bug_time = $bug_entry->{date};
     $bug_done = $bug_entry->{done};
     $bug_state = $bug_entry->{pending};
@@ -100,7 +98,6 @@ while (my $row = $query->fetchrow_hashref()) {
     # report, so we mark it as closed and set its time to before the archival
     # data, to not clutter the output reports.
     print " bug unknown; closing\n" if $verbose;
-    $sql_time = "'NOW', '-28 days'";
     $bug_time = time() - 28 * 24 * 60 * 60;
     $bug_done = 1;
     $bug_state = 'done';
@@ -124,8 +121,8 @@ while (my $row = $query->fetchrow_hashref()) {
               undef, $row->{'id'});
     print " adding done entry\n" if $verbose;
     $link->do('INSERT INTO translations
-               VALUES (NULL, ?, ?, DATETIME(?), ?, "DONE", "closed", NULL, ?)',
-              undef, $row->{name}, $row->{translator}, $sql_time,
+               VALUES (NULL, ?, ?, ?, ?, "DONE", "closed", NULL, ?)',
+              undef, $row->{name}, $row->{translator}, $bug_time,
               $row->{category}, $bug_id);
   }
 }
