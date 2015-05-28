@@ -44,7 +44,7 @@ my $team = 'ca';
 
 my $basedir = '/srv/ca.debian.net';
 my $tmpdir = "$basedir/tmp/$$";
-my $dir = "$basedir/www";
+my $webdir = "$basedir/www";
 
 my $db_file = $basedir . "/data/$team.db";
 
@@ -185,7 +185,7 @@ for my $tmpname (split(/,/, $name)) {
             undef, $tmpname, $translator, $date, $type, $status, $ext, $bugnr);
     my $insertid = $db->last_insert_id(undef, undef, undef, undef);
     if ($tmpfile) {
-        my $newfile = "$dir/$team/$insertid.$ext";
+        my $newfile = "$webdir/$team/$insertid.$ext";
         copy($tmpfile, $newfile);
     }
 }
