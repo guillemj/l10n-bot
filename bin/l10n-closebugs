@@ -105,7 +105,7 @@ while (my $row = $query->fetchrow_hashref()) {
     $bug_done = 1;
     $bug_state = 'done';
   }
-  my $bug_date = Date::Format::time2str("%Y-%m-%d %H\:%M\:%S", $bug_time);
+  my $bug_date = Date::Format::time2str("%Y-%m-%d %H:%M:%S", $bug_time);
 
   print " bug state '$bug_state'; done? '$bug_done'\n" if $verbose;
 
