@@ -107,6 +107,7 @@ while (my $row = $query->fetchrow_hashref()) {
   }
   my $bug_date = Date::Format::time2str("%Y-%m-%d %H:%M:%S", $bug_time);
 
+  print " bug time '$bug_time' date '$bug_date'\n" if $verbose;
   print " bug state '$bug_state'; done? '$bug_done'\n" if $verbose;
 
   # If it doesn't match with what we have in db, change it
