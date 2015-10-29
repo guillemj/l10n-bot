@@ -154,13 +154,13 @@ Nosaltres recomanem les eines següents, però es poden fer servir d'altres.
 
 * Eines per a GNU/Linux
 
-  KBabel <http://i18n.kde.org/tools/kbabel/>
+  Lokalize <https://userbase.kde.org/Lokalize>
 
-	El Kbabel és l'eina de localització creada al voltant del
+	El Lokalize és l'eina de localització creada al voltant del
 	projecte d'escriptori KDE. És una eina molt completa que
 	permet traduir fitxers PO i treballar amb memòries de traducció.
 
-  Gtranslator <http://www.gtranslator.org/>
+  Gtranslator <https://wiki.gnome.org/Apps/Gtranslator>
 
 	El Gtranslator és l'eina de localització creada al voltant
 	del projecte d'escriptori GNOME. És una eina molt completa que
@@ -170,7 +170,7 @@ Nosaltres recomanem les eines següents, però es poden fer servir d'altres.
 
 * Eines per a Microsoft Windows
 
-  PoEdit <http://poedit.sourceforge.net/>
+  PoEdit <https://poedit.net/>
 
 	És una eina de localització per a Windows que permet treballar
 	amb fitxers PO i usar memòries de traducció. Es troba traduïda al
