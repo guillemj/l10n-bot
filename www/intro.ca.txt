@@ -239,7 +239,7 @@ i l'holandès) i hem descobert que ho tenen muntat prou bé.
 Ací teniu una explicació de com funcionen aquests dos equips, i és la manera
 que ens agradaria adoptar per l'equip català:
 
-<https://lists.debian.org/debian-i18n/2004/debian-i18n-200401/msg00034.html>
+<https://lists.debian.org/debian-i18n/2004/01/msg00034.html>
 
 TERMINOLOGIA
 
