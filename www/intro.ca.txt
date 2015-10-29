@@ -39,7 +39,7 @@ següents:
   1. Subscriu-te a la llista de localització de Debian en català a través de
      l'URL:
 
-     <http://lists.debian.org/debian-l10n-catalan/>
+     <https://lists.debian.org/debian-l10n-catalan/>
 
   2. Per donar coherència a la traducció d'un projecte tan gran és important
      familiaritzar-se amb les regles d'estil i terminologia que s'han decidit
@@ -48,11 +48,11 @@ següents:
 
      Recull de termes:
 
-	<http://www.softcatala.org/projectes/eines/recull/recull.htm>
+	<https://www.softcatala.org/projectes/eines/recull/recull.htm>
 
      Guia d'estil:
 
-	<http://www.softcatala.org/projectes/eines/guiaestil/guiaestil.htm>
+	<https://www.softcatala.org/projectes/eines/guiaestil/guiaestil.htm>
 
   3. Utilitza la informació de <http://ca.debian.net/> per saber els mòduls
      que ja s'han assignat o que ja s'han traduït. Accedeix a la direcció
@@ -114,7 +114,7 @@ següents:
   1. Subscriu-te a la llista de localització de Debian en català a través
      de l'URL:
 
-	<http://lists.debian.org/debian-l10n-catalan/>
+	<https://lists.debian.org/debian-l10n-catalan/>
 
   2. Per donar coherència a la traducció d'un projecte tan gran és important
      familiaritzar-se amb les regles d'estil i terminologia que s'han decidit
@@ -123,11 +123,11 @@ següents:
 
      Recull de termes:
 
-	<http://www.softcatala.org/projectes/eines/recull/recull.htm>
+	<https://www.softcatala.org/projectes/eines/recull/recull.htm>
 
      Guia d'estil:
 
-	<http://www.softcatala.org/projectes/eines/guiaestil/guiaestil.htm>
+	<https://www.softcatala.org/projectes/eines/guiaestil/guiaestil.htm>
 
 
   3. Utilitza la informació de <http://ca.debian.net/> per saber els mòduls
@@ -166,7 +166,7 @@ Nosaltres recomanem les eines següents, però es poden fer servir d'altres.
 	del projecte d'escriptori GNOME. És una eina molt completa que
 	permet traduir fitxers PO i treballar amb memòries de traducció.
 
-  Emacs-po-mode <http://www.gnu.org/software/emacs/>
+  Emacs-po-mode <https://www.gnu.org/software/emacs/>
 
 * Eines per a Microsoft Windows
 
@@ -185,7 +185,7 @@ Consulta l'estat actual dels de les traduccions dels mòduls de Debian a:
 
 L'estat global de les traduccions a:
 
-	<http://www.debian.org/intl/Catalan/>
+	<https://www.debian.org/intl/Catalan/>
 
 
 Missatge de benvinguda
@@ -217,7 +217,7 @@ Robert Millan (rmh), Jesús Climent (mooch), Sergio Talens (sto)
 i Steve Langasek (vorlon).
 
 Hem fet una llista de les coses que cal fer, i per damunt de tot, com fer-les.
-<http://people.debian.org/~guillem/catalan/TODO>.
+<https://people.debian.org/~guillem/catalan/TODO>.
 
 En principi, la nostra prioritat seria fer que tots els missatges que surten
 quan s'instal·la Sarge siguen en català. Això inclou Debian-Installer, les
@@ -239,15 +239,15 @@ i l'holandès) i hem descobert que ho tenen muntat prou bé.
 Ací teniu una explicació de com funcionen aquests dos equips, i és la manera
 que ens agradaria adoptar per l'equip català:
 
-<http://lists.debian.org/debian-i18n/2004/debian-i18n-200401/msg00034.html>
+<https://lists.debian.org/debian-i18n/2004/debian-i18n-200401/msg00034.html>
 
 TERMINOLOGIA
 
 En el passat, havíem acordat seguir la guia d'estil de Softcatalà i el recull
 de termes tecnològics i el termcat per a les nostres traduccions.
 
-<http://www.softcatala.org/projectes/eines/guiaestil/guiaestil.htm>
-<http://www.softcatala.org/projectes/eines/recull/recull.htm>
+<https://www.softcatala.org/projectes/eines/guiaestil/guiaestil.htm>
+<https://www.softcatala.org/projectes/eines/recull/recull.htm>
 
 Tant els projectes de traducció Mozilla, OpenOffice, GNOME, KDE i segurament
 altres importants utilitzen aquestes regles d'estil i terminologia, així que
@@ -264,7 +264,7 @@ i demanar alguna tasca.
 Segurament també obrirem un projecte a Alioth on ficarem les pàgines web
 dinàmiques amb les estadístiques de les traduccions, etc., que complementaria
 la informació general que es troba en
-<http://www.debian.org/international/Catalan/>.
+<https://www.debian.org/international/Catalan/>.
 
 Bé, esperem comentaris, i si la gent està d'acord i es veu que hi ha
 prou gent per dur-lo endavant (això no podrà funcionar si no tenim tant

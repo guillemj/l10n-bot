@@ -17,11 +17,11 @@
 
 <p tal:condition="true:view/default">L'objectiu d'aquesta pàgina
 és coordinar la traducció al català de material relacionat
-amb <a href="http://www.debian.org/">Debian</a>. A la pàgina
+amb <a href="https://www.debian.org/">Debian</a>. A la pàgina
 d'<a href="/intro">introducció</a> podeu aprendre més sobre
 el funcionament general de l'equip i sobre què són les «<a
 href="/pseudo-urls">pseudo-urls</a>». També podeu trobar informació
-addicional al <a href="http://wiki.debian.org/L10n/Catalan">wiki</a>.</p>
+addicional al <a href="https://wiki.debian.org/ca/L10n/Catalan">wiki</a>.</p>
 
 <h2 tal:condition="true:view/translator" class="translator">Traduccions de
 <span tal:replace="view/translator" /></h2>
@@ -53,7 +53,7 @@ addicional al <a href="http://wiki.debian.org/L10n/Catalan">wiki</a>.</p>
     <tr tal:repeat="elem cat/list" class="${elem/type}">
       <td tal:condition="false:elem/type_is_bts">${elem/type}</td>
       <td tal:condition="true:elem/type_is_bts">
-        <a href="http://bugs.debian.org/${elem/bugnr}">${elem/type}</a>
+        <a href="https://bugs.debian.org/${elem/bugnr}">${elem/type}</a>
       </td>
       <td>
         <a href="?history=${elem/name}">${elem/name}</a>
